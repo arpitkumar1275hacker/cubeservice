@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms and Conditions | Cube Service</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4f46e5;
+            --secondary-color: #4338ca;
+            --text-dark: #1f2937;
+            --text-muted: #4b5563;
+            --bg-light: #f9fafb;
+            --border-color: #e5e7eb;
+        }
+    body{
+    padding-top: 140px; /* header ki height ke according adjust karein */
+}
+
+/* Tablet */
+@media (max-width: 1024px){
+    body{
+        padding-top: 170px;
+    }
+}
+
+/* Mobile */
+@media (max-width: 768px){
+    body{
+        padding-top: 220px;
+    }
+}
+
+/* Small Mobile */
+@media (max-width: 480px){
+    body{
+        padding-top: 250px;
+    }
+}
+
+
+        /* Header Styling */
+        .legal-header {
+            background: #fff;
+            padding: 40px 20px;
+            text-align: center;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .legal-header h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary-color);
+            margin: 0;
+        }
+
+        .legal-header p {
+            color: var(--text-muted);
+            margin-top: 10px;
+        }
+
+        /* Layout */
+        .legal-wrapper {
+            max-width: 1200px;
+            margin: 40px auto;
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 40px;
+            padding: 0 20px;
+        }
+
+        /* Sidebar Nav */
+        .legal-sidebar {
+            position: sticky;
+            top: 20px;
+            height: fit-content;
+        }
+
+        .legal-sidebar ul {
+            list-style: none;
+            padding: 0;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+        }
+
+        .legal-sidebar li {
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .legal-sidebar li:last-child { border: none; }
+
+        .legal-sidebar a {
+            display: block;
+            padding: 15px 20px;
+            text-decoration: none;
+            color: var(--text-muted);
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+        }
+
+        .legal-sidebar a:hover {
+            background: #eef2ff;
+            color: var(--primary-color);
+        }
+
+        /* Content Area */
+        .legal-content {
+            background: white;
+            padding: 50px;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+            border: 1px solid var(--border-color);
+            line-height: 1.8;
+        }
+
+        .legal-content h2 {
+            font-size: 1.5rem;
+            color: var(--text-dark);
+            margin-top: 40px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #eef2ff;
+        }
+
+        .legal-content h2:first-child { margin-top: 0; }
+
+        .legal-content p, .legal-content li {
+            color: var(--text-muted);
+            margin-bottom: 15px;
+        }
+
+        .important-box {
+            background: #fef2f2;
+            border-left: 4px solid #ef4444;
+            padding: 20px;
+            margin: 20px 0;
+            font-size: 0.9rem;
+            color: #991b1b;
+        }
+
+        .back-home {
+            display: inline-block;
+            margin-top: 30px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .legal-wrapper {
+                grid-template-columns: 1fr;
+            }
+            .legal-sidebar {
+                display: none;
+            }
+            .legal-content {
+                padding: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+{% include 'header.html' %}
+<div class="legal-wrapper">
+    <aside class="legal-sidebar">
+        <ul>
+            <li><a href="#services">1. Services</a></li>
+            <li><a href="#accounts">2. Account Creation</a></li>
+            <li><a href="#user-content">3. User Content</a></li>
+            <li><a href="#bookings">4. Bookings</a></li>
+            <li><a href="#pricing">5. Pricing & Payments</a></li>
+            <li><a href="#conduct">6. Customer Conduct</a></li>
+            <li><a href="#termination">7. Termination</a></li>
+        </ul>
+        <a href="/" class="back-home">← Back to Dashboard</a>
+    </aside>
+
+    <main class="legal-content">
+        
+        <section id="introduction">
+            <p>These terms and conditions (“Terms”) govern the use of services made available through <strong>https://www.Cubeservice.in</strong> and/or the Cube Service mobile app. By using our services, you agree to a binding legal contract between you and Cube Service.</p>
+            
+            <div class="important-box">
+                If you do not agree to these Terms, or comply with the requirements listed here, please do not use the Services.
+            </div>
+        </section>
+
+        <section id="services">
+            <h2>1. Services</h2>
+            <p>(a) The Platform enables you to arrange and schedule home-based services with independent third-party service providers (“Service Professionals”).</p>
+            <p>(b) UC facilitates the transfer of payments to Service Professionals but does not provide the "Pro Services" itself. Service Professionals are solely liable for the quality of work.</p>
+        </section>
+
+        <section id="accounts">
+            <h2>2. Account Creation</h2>
+            <p>(a) To avail the Services, you must create an account. You must be at least <strong>18 years of age</strong> to register.</p>
+            <p>(b) You are solely responsible for maintaining the security and confidentiality of your Account credentials.</p>
+        </section>
+
+        <section id="user-content">
+            <h2>3. User Content</h2>
+            <p>Our Platform allows you to post reviews and feedback. You grant Cube Service a worldwide, perpetual, and royalty-free licence to use your reviews for marketing and quality control.</p>
+        </section>
+
+        <section id="bookings">
+            <h2>4. Bookings</h2>
+            <p>(a) <strong>Orders:</strong> You may request Pro Services based on available slots. We use reasonable efforts to find a professional for your requested time.</p>
+            <p>(b) <strong>Confirmation:</strong> Bookings are confirmed via SMS, Email, or Push Notification.</p>
+        </section>
+
+        <section id="pricing">
+            <h2>5. Pricing, Fees, and Payment Terms</h2>
+            <p>(a) Cube Service acts as a limited collection agent on behalf of Service Professionals.</p>
+            <p>(b) <strong>Convenience Fee:</strong> UC reserves the right to charge a convenience fee for facilitating the booking.</p>
+            <p>(c) <strong>Taxes:</strong> All charges and fees are subject to applicable GST and other taxes.</p>
+        </section>
+
+        <section id="conduct">
+            <h2>6. Customer Conduct</h2>
+            <p>Cube Service strictly prohibits discrimination against Service Professionals on the basis of race, religion, caste, disability, or gender. Customers must provide a safe and clean environment for the work to be performed.</p>
+        </section>
+
+        <section id="termination">
+            <h2>7. Term and Termination</h2>
+            <p>We may deactivate or terminate your access immediately if you violate any part of these Terms or the Community Guidelines. You may terminate your account at any time by contacting us.</p>
+        </section>
+
+        <section id="disclaimer">
+            <h2>8. Disclaimers & Warranties</h2>
+            <p>The services are provided on an "as is" basis. Cube Service is not liable for fulfillment of any bookings or for any acts or omissions of the Service Professionals.</p>
+        </section>
+
+    </main>
+</div>
+{% include 'footer.html' %}
+</body>
+</html>

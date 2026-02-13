@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Update Service Center</title>
+<style>
+body{
+    background:#f4f6f8;
+    font-family:'Segoe UI',sans-serif;
+}
+
+.form-wrapper{
+    max-width:600px;
+    background:#fff;
+    margin:40px auto;
+    padding:25px;
+    border-radius:10px;
+    box-shadow:0 6px 20px rgba(0,0,0,0.08);
+}
+
+h2{
+    margin-bottom:20px;
+}
+
+input{
+    width:100%;
+    padding:12px;
+    margin-bottom:15px;
+    border-radius:8px;
+    border:1px solid #ddd;
+    font-size:14px;
+}
+
+button{
+    background:#4f46e5;
+    color:white;
+    padding:12px;
+    border:none;
+    border-radius:8px;
+    width:100%;
+    font-size:15px;
+    cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+{% include 'headerr.html' %}
+
+<div class="form-wrapper">
+<h2>Update Service Center</h2>
+
+<form method="POST">
+{% csrf_token %}
+
+<input type="text" name="username" value="{{ servicecenter.username }}" required>
+<input type="text" name="servicecenter_name" value="{{ servicecenter.servicecenter_name }}" required>
+<input type="text" name="author_name" value="{{ servicecenter.author_name }}" required>
+<input type="text" name="district" value="{{ servicecenter.district }}" required>
+<input type="text" name="state" value="{{ servicecenter.state }}" required>
+<input type="text" name="pincode" value="{{ servicecenter.pincode }}" required>
+<input type="text" name="mobile" value="{{ servicecenter.mobile }}" required>
+<input type="email" name="email" value="{{ servicecenter.email }}" required>
+<input type="text" name="aadhaar" value="{{ servicecenter.aadhaar }}" required>
+
+<button type="submit">Update Service Center</button>
+</form>
+</div>
+
+</body>
+</html>

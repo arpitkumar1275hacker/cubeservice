@@ -1,0 +1,59 @@
+
+/* Cancel Modal Overlay */
+.cancel-overlay{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.45);
+    z-index:1000;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+/* Modal Box */
+.cancel-modal{
+    background:#fff;
+    width:90%;
+    max-width:420px;
+    border-radius:12px;
+    padding:22px;
+    box-shadow:0 15px 40px rgba(0,0,0,0.2);
+    animation:fadeIn 0.25s ease;
+}
+
+/* Mobile friendly */
+@media(max-width:480px){
+    .cancel-modal{
+        width:92%;
+        padding:18px;
+    }
+}
+
+@keyframes fadeIn{
+    from{opacity:0; transform:scale(0.95);}
+    to{opacity:1; transform:scale(1);}
+}
+
+.cancel-modal h3{
+    margin-top:0;
+    margin-bottom:15px;
+    font-size:20px;
+}
+
+.cancel-modal select,
+.cancel-modal textarea{
+    width:100%;
+    padding:10px;
+    border:1px solid #ddd;
+    border-radius:6px;
+    margin-bottom:10px;
+    font-size:14px;
+}
+
+.cancel-actions{
+    display:flex;
+    justify-content:flex-end;
+    gap:10px;
+}
+

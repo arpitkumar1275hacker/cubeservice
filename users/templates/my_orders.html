@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>My Orders</title>
+
+{% load static %}
+{% load custom_filters %}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<link rel="stylesheet" href="{% static 'css/model.css' %}">
+
+<style>
+    .container{
+    max-width:1100px;
+    margin:40px auto;
+}
+</style>
+
+
+<script>
+function toggleForm(id){
+    let el = document.getElementById(id);
+    el.style.display = el.style.display === "block" ? "none" : "block";
+}
+</script>
+</head>
+
+<body>
+
+{% include "header.html" %}
+
+<div class="container">
+<h2>My Orders</h2>
+
+{% for order in orders %}
+<div class="order-box">
+
+    <div class="order-header">
+        <div>
+            <strong>Order ID:</strong> {{ order.id }} <br>
+            <small>{{ order.created_at }}</small>
+        </div>
+        <div>
+           <div>
+  {% if cancel_orders|get_item:order.id %}
+      <span class="status-badge status-cancelled">
+        Cancelled
+      </span>
+
+  {% elif order.status == "pending" %}
+      <span class="status-badge status-pending">
+        Pending
+      </span>
+
+  {% elif order.status == "accepted" %}
+      <span class="status-badge status-accepted">
+        Accepted
+      </span>
+
+  {% elif order.status == "rejected" %}
+      <span class="status-badge status-rejected">
+        Rejected
+      </span>
+  {% endif %}
+</div>
+
+        </div>
+    </div>
+
+    {% for item in order.items.all %}
+    <div class="product">
+        <img src="{{ item.image }}">
+        <div>
+            <h4>{{ item.service_name }}</h4>
+            <p>{{ item.details }}</p>
+            <p>Qty: {{ item.quantity }}</p>
+            <strong>₹{{ item.price }}</strong><br><br>
+
+            <!-- FEEDBACK BUTTON -->
+            {% if not feedbacks|get_item:item.id %}
+            <button class="btn btn-feedback"
+                    onclick="toggleForm('fb{{ item.id }}')">
+                Feedback
+            </button>
+
+            <div class="feedback-form" id="fb{{ item.id }}">
+                <form method="POST"
+                      action="{% url 'users:submit_feedback' order.id %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="service_name" value="{{ item.service_name }}">
+                    <select name="rating" required>
+                        <option value="">Rating</option>
+                        <option value="1">1 ⭐</option>
+                        <option value="2">2 ⭐⭐</option>
+                        <option value="3">3 ⭐⭐⭐</option>
+                        <option value="4">4 ⭐⭐⭐⭐</option>
+                        <option value="5">5 ⭐⭐⭐⭐⭐</option>
+                    </select>
+                    <textarea name="message" rows="3" required></textarea>
+                    <button class="btn btn-feedback">Submit</button>
+                </form>
+            </div>
+            {% else %}
+                <p style="color:green;">✔ Feedback submitted</p>
+            {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+
+    <!-- CANCEL ORDER (INLINE LIKE FEEDBACK) -->
+    {% if not cancel_orders|get_item:order.id %}
+    <button class="btn btn-cancel"
+            onclick="toggleForm('cancel{{ order.id }}')">
+        Cancel Order
+    </button>
+{% if not cancel_orders|get_item:order.id %}
+
+<button class="btn btn-warning"
+        onclick="toggleForm('complaint{{ order.id }}')">
+    Raise Complaint
+</button>
+
+<div class="feedback-form" id="complaint{{ order.id }}">
+    <form method="POST"
+          action="{% url 'users:submit_complaint' order.id %}"
+          enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <textarea name="complaint_text"
+                  rows="4"
+                  placeholder="Describe your complaint"
+                  required></textarea>
+<div class="audio-box">
+    <button type="button"
+            class="btn btn-warning"
+            id="recordBtn{{ order.id }}"
+            onclick="startRecording({{ order.id }})">
+        🎤 Record
+    </button>
+
+    <button type="button"
+            class="btn btn-danger"
+            id="stopBtn{{ order.id }}"
+            onclick="stopRecording({{ order.id }})"
+            style="display:none;">
+        ⏹ Stop
+    </button>
+
+    <audio id="audioPreview{{ order.id }}" controls style="display:none;"></audio>
+
+    <!-- Hidden input to send audio -->
+    <input type="hidden" name="audio_blob" id="audioBlob{{ order.id }}">
+</div>
+<input type="hidden" name="service_name" value="{{ item.service_name }}">
+<input type="file"
+       name="complaint_image"
+       accept="image/*"
+       class="form-control"
+       style="margin:8px 0;">
+
+
+        <button type="submit" class="btn btn-warning">
+            Submit Complaint
+        </button>
+    </form>
+</div>
+
+
+{% endif %}
+
+    <div class="feedback-form" id="cancel{{ order.id }}">
+        <form method="POST"
+              action="{% url 'users:cancel_order' order.id %}">
+            {% csrf_token %}
+            <select name="reason" required>
+                <option value="">Cancel Reason</option>
+                <option value="Ordered by mistake">Ordered by mistake</option>
+                <option value="Service not required">Service not required</option>
+                <option value="Found better option">Found better option</option>
+                <option value="Other">Other</option>
+            </select>
+           
+            <button type="submit" class="btn btn-cancel"
+                    onclick="return confirm('Are you sure you want to cancel?');">
+                Confirm Cancel
+            </button>
+        </form>
+    </div>
+    {% endif %}
+
+</div>
+
+{% endfor %}
+</div>
+{% include "footer.html" %}
+<script>
+let mediaRecorder;
+let audioChunks = {};
+
+function startRecording(orderId) {
+    navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
+        mediaRecorder = new MediaRecorder(stream);
+        audioChunks[orderId] = [];
+
+        mediaRecorder.ondataavailable = e => {
+            audioChunks[orderId].push(e.data);
+        };
+
+        mediaRecorder.onstop = () => {
+            const audioBlob = new Blob(audioChunks[orderId], { type: 'audio/webm' });
+            const audioUrl = URL.createObjectURL(audioBlob);
+
+            const audio = document.getElementById('audioPreview' + orderId);
+            audio.src = audioUrl;
+            audio.style.display = "block";
+
+            // Convert to File and attach to form
+            const file = new File([audioBlob], "complaint.webm", { type: "audio/webm" });
+            const dataTransfer = new DataTransfer();
+            dataTransfer.items.add(file);
+
+            // Create file input dynamically
+            let input = document.createElement("input");
+            input.type = "file";
+            input.name = "complaint_audio";
+            input.files = dataTransfer.files;
+            input.style.display = "none";
+
+            audio.closest("form").appendChild(input);
+        };
+
+        mediaRecorder.start();
+
+        document.getElementById('recordBtn' + orderId).style.display = "none";
+        document.getElementById('stopBtn' + orderId).style.display = "inline-block";
+    });
+}
+
+function stopRecording(orderId) {
+    mediaRecorder.stop();
+
+    document.getElementById('recordBtn' + orderId).style.display = "inline-block";
+    document.getElementById('stopBtn' + orderId).style.display = "none";
+}
+</script>
+
+</body>
+</html>

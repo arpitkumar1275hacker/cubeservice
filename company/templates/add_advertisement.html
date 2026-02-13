@@ -1,0 +1,247 @@
+{% include 'headerr.html' %}
+{% block content %}
+
+
+<style>
+/* ===== PAGE ===== */
+.ad-page{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:linear-gradient(135deg,#eef2ff,#f8fafc);
+    padding:40px 15px;
+}
+
+/* ===== MAIN CONTAINER ===== */
+.ad-container{
+    width:100%;
+    max-width:1100px;
+}
+
+/* ===== CARD ===== */
+.ad-box{
+    width:100%;
+    max-width:520px;
+    background:#ffffff;
+    padding:35px 32px;
+    border-radius:18px;
+    box-shadow:0 20px 50px rgba(0,0,0,0.08);
+    margin:0 auto;
+}
+
+/* ===== TITLE ===== */
+.ad-box h2{
+    font-size:24px;
+    font-weight:700;
+    color:#111827;
+    margin-bottom:25px;
+    text-align:center;
+    letter-spacing:0.3px;
+}
+
+/* ===== FILE UPLOAD ===== */
+.file-upload{
+    border:2px dashed #d1d5db;
+    border-radius:14px;
+    padding:35px 25px;
+    text-align:center;
+    cursor:pointer;
+    transition:0.3s;
+    position:relative;
+    background:#fafafa;
+}
+
+.file-upload:hover{
+    border-color:#4f46e5;
+    background:#f5f7ff;
+}
+
+.file-upload input{
+    position:absolute;
+    inset:0;
+    opacity:0;
+    cursor:pointer;
+}
+
+.file-upload .upload-text{
+    font-size:15px;
+    color:#6b7280;
+    font-weight:600;
+    line-height:1.6;
+}
+
+/* ===== PREVIEW ===== */
+.preview{
+    margin-top:18px;
+    text-align:center;
+}
+
+.preview img{
+    display:none;
+    max-width:100%;
+    height:220px;
+    object-fit:cover;
+    border-radius:14px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.15);
+}
+
+/* ===== BUTTON ===== */
+.submit-btn{
+    margin-top:25px;
+    width:100%;
+    padding:15px;
+    border:none;
+    border-radius:14px;
+    background:linear-gradient(135deg,#4f46e5,#6366f1);
+    color:white;
+    font-size:16px;
+    font-weight:700;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.submit-btn:hover{
+    transform:translateY(-2px);
+    box-shadow:0 15px 35px rgba(79,70,229,0.35);
+}
+
+/* ===== ADS SECTION ===== */
+.ads-section{
+    margin-top:60px;
+    text-align:center;
+}
+
+.ads-title{
+    font-size:22px;
+    font-weight:700;
+    color:#111827;
+    margin-bottom:25px;
+}
+
+/* ===== GRID ===== */
+.ads-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+    gap:22px;
+}
+
+/* ===== AD CARD ===== */
+.ad-card{
+    background:#ffffff;
+    border-radius:16px;
+    padding:12px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.08);
+    transition:0.3s;
+}
+
+.ad-card:hover{
+    transform:translateY(-6px);
+    box-shadow:0 18px 45px rgba(0,0,0,0.12);
+}
+
+/* ===== AD IMAGE ===== */
+.ad-card img{
+    width:100%;
+    height:180px;
+    object-fit:cover;
+    border-radius:12px;
+}
+
+/* ===== AD FOOTER ===== */
+.ad-footer{
+    margin-top:10px;
+    font-size:13px;
+    color:#6b7280;
+    font-weight:500;
+}
+</style>
+
+<div class="ad-page">
+    <div class="ad-container">
+
+        <!-- ===== FORM CARD ===== -->
+        <div class="ad-box">
+
+            <h2>Add Advertisement</h2>
+
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <!-- Upload Field -->
+                <div class="file-upload">
+                    <input type="file" name="image" accept="image/*" required>
+                    <div class="upload-text">
+                        Click to upload advertisement image<br>
+                        <small>(PNG, JPG, JPEG)</small>
+                    </div>
+                </div>
+
+                <!-- Preview -->
+                <div class="preview">
+                    <img id="previewImage">
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="submit-btn">
+                    Save Advertisement
+                </button>
+
+            </form>
+
+        </div>
+
+        <!-- ===== ADS DISPLAY ===== -->
+        <div class="ads-section">
+            <div class="ads-title">Saved Advertisements</div>
+
+            <div class="ads-grid">
+{% for ad in ads %}
+<div class="ad-card">
+    <img src="{{ ad.image.url }}" alt="Advertisement">
+
+    <div class="ad-footer">
+        {{ ad.created_at|date:"d M Y, H:i" }}
+
+        <div style="margin-top:8px;">
+            <a href="{% url 'company:update_advertisement' ad.id %}"
+               style="
+               display:inline-block;
+               padding:6px 14px;
+               border-radius:8px;
+               background:#4f46e5;
+               color:#fff;
+               font-size:13px;
+               font-weight:600;
+               text-decoration:none;">
+                Edit
+            </a>
+        </div>
+    </div>
+</div>
+{% endfor %}
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+const input = document.querySelector('input[type="file"]');
+const preview = document.getElementById('previewImage');
+
+input.addEventListener('change', function(){
+    const file = this.files[0];
+    if(file){
+        const reader = new FileReader();
+        reader.onload = function(){
+            preview.src = reader.result;
+            preview.style.display = "block";
+        }
+        reader.readAsDataURL(file);
+    }
+});
+</script>
+
+{% endblock %}

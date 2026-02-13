@@ -1,0 +1,259 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CUBEService Admin Panel</title>
+<style>
+ /* ===== CONTENT WRAPPER ===== */
+.content {
+    padding: 20px;
+    margin-left: 260px;   /* sidebar width */
+}
+
+/* ===== FORM CARD ===== */
+.form-card {
+    background: #fff;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    max-width: 800px;
+    margin-bottom: 30px;
+}
+
+.form-card h2 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* ===== FORM GROUP ===== */
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+/* ===== BUTTON ===== */
+.submit-btn {
+    background: #4e73df;
+    color: #fff;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+.submit-btn:hover {
+    background: #2e59d9;
+}
+
+/* ===== IMAGE PREVIEW ===== */
+.form-group img {
+    margin-top: 10px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+}
+
+/* ===== TABLE ===== */
+.table-wrapper {
+    background: #fff;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    overflow-x: auto;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 900px;
+}
+
+.data-table th,
+.data-table td {
+    padding: 12px;
+    text-align: center;
+    border-bottom: 1px solid #eee;
+}
+
+.data-table th {
+    background: #f8f9fc;
+    font-weight: 600;
+}
+
+.data-table img {
+    width: 60px;
+    height: auto;
+    border-radius: 6px;
+}
+
+/* ===== MOBILE RESPONSIVE ===== */
+@media (max-width: 992px) {
+    .content {
+        margin-left: 0;
+        padding-top: 80px; /* mobile header */
+    }
+
+    .form-card {
+        max-width: 100%;
+        padding: 20px;
+    }
+
+    .submit-btn {
+        width: 100%;
+    }
+}
+
+@media (max-width: 576px) {
+    .form-card {
+        padding: 15px;
+    }
+
+    .data-table {
+        font-size: 13px;
+    }
+}
+
+</style>
+</head>
+
+<body>
+ {% include 'headerr.html' %}
+  
+  {% block content %}
+
+
+<!-- CONTENT (single wrapper) -->
+<div class="content">
+
+  <!-- FORM -->
+  <div class="form-card">
+    <h2>Home Service Form</h2>
+
+    <form method="POST" enctype="multipart/form-data" id="homeServiceForm">
+      {% csrf_token %}
+
+      <div class="form-group">
+        <label>Product Name</label>
+        <input type="text" name="productName" id="productName">
+        <div class="error" id="nameError">Product name is required</div>
+      </div>
+
+      <div class="form-group">
+        <label>Upload Image</label>
+        <input type="file" name="productImage" id="productImage">
+        <div class="error" id="imageError">Image is required</div>
+
+        <div class="preview" id="previewBox">
+          <img id="previewImg">
+        </div>
+      </div>
+
+      <button type="submit" class="submit-btn">Submit</button>
+    </form>
+  
+
+  <!-- TABLE -->
+  {% if services %}
+  <div class="table-wrapper">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Image</th>
+          <th>Product Name</th>
+          <th>Added On</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for item in services %}
+        <tr>
+          <td><img src="{{ item.productImage.url }}" alt="Product Image"></td>
+          <td>{{ item.productName }}</td>
+          <td>{{ item.created_at|date:"d M Y" }}</td>
+          <td>
+            <form method="POST" action="{% url 'company:delete_homeservice' item.id %}">
+              {% csrf_token %}
+              <button type="submit" class="delete-btn">Delete</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+    <p style="text-align:center;">No services added yet.</p>
+  {% endif %}
+
+</div>
+
+{% endblock %}
+<script>
+const sidebar = document.getElementById("sidebar");
+const overlay = document.getElementById("overlay");
+
+function openMenu(){
+  sidebar.classList.add("active");
+  overlay.classList.add("show");
+}
+function closeMenu(){
+  sidebar.classList.remove("active");
+  overlay.classList.remove("show");
+}
+
+/* VALIDATION */
+const form = document.getElementById("homeServiceForm");
+const nameInput = document.getElementById("productName");
+const imageInput = document.getElementById("productImage");
+const nameError = document.getElementById("nameError");
+const imageError = document.getElementById("imageError");
+const previewBox = document.getElementById("previewBox");
+const previewImg = document.getElementById("previewImg");
+
+imageInput.addEventListener("change", () => {
+  if(imageInput.files[0]){
+    previewBox.style.display = "block";
+    previewImg.src = URL.createObjectURL(imageInput.files[0]);
+  }
+});
+
+form.addEventListener("submit", function(e){
+  let valid = true;
+  nameError.style.display = "none";
+  imageError.style.display = "none";
+
+  if(nameInput.value.trim() === ""){
+    nameError.style.display = "block";
+    valid = false;
+  }
+
+  if(imageInput.files.length === 0){
+    imageError.style.display = "block";
+    valid = false;
+  }
+
+  if(!valid){
+    e.preventDefault(); // ❌ stop only if invalid
+  }
+});
+</script>
+
+
+</body>
+</html>

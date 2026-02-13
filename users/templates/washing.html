@@ -1,0 +1,219 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CUBEService – Oven Services</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="{% static 'css/pr.css' %}">
+
+<style>
+    /* ===== GLOBAL & RESET ===== */
+    body { background-color: #f4f7f6; margin: 0; font-family: 'Segoe UI', sans-serif; }
+
+    /* ===== SEARCH BAR TOP ===== */
+    .top-search-container { max-width: 800px; margin: 20px auto; padding: 0 15px; }
+    .service-search {
+        display: flex; align-items: center; background: #fff;
+        border-radius: 50px; padding: 10px 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    }
+    .service-search input { border: none; outline: none; width: 100%; font-size: 16px; margin-left: 10px; }
+@media (max-width: 768px) {
+    .top-search-container {
+        margin-top: 130px; /* header height ke hisaab se */
+    }
+}
+
+    /* ===== RESPONSIVE LAYOUT ===== */
+    .main-wrapper {
+        display: flex; flex-direction: column; max-width: 1300px;
+        margin: 0 auto; gap: 20px; padding: 0 15px 40px;
+    }
+
+    @media(min-width: 992px) {
+        .main-wrapper { flex-direction: row; align-items: flex-start; }
+        /* Left side fixed width */
+        .left-sidebar { flex: 0 0 300px; position: sticky; top: 100px; max-height: 85vh; display: flex; flex-direction: column; gap: 15px; }
+        .center-content { flex: 1; }
+        .right-card { flex: 0 0 280px; position: sticky; top: 100px; }
+    }
+
+    /* ===== SIDEBAR FEEDBACK (SCROLLABLE) ===== */
+    .feedback-sidebar-container {
+        background: #fff; border-radius: 12px; padding: 15px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        display: flex; flex-direction: column; overflow: hidden;
+    }
+
+    .feedback-scroll-area {
+        overflow-y: auto;
+        max-height: 400px; /* Adjust height as needed */
+        padding-right: 5px;
+    }
+
+    /* Custom Scrollbar */
+    .feedback-scroll-area::-webkit-scrollbar { width: 4px; }
+    .feedback-scroll-area::-webkit-scrollbar-thumb { background: #ccc; border-radius: 10px; }
+
+    /* ===== COMPONENTS ===== */
+    .card { background: #fff; border-radius: 12px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+    
+    .service-row {
+        display: flex; flex-direction: column; gap: 15px; padding: 20px;
+        background: #fff; border-radius: 12px; border: 1px solid #eee; margin-bottom: 15px;
+    }
+    @media(min-width: 576px) { .service-row { flex-direction: row; align-items: flex-start; } }
+
+    .service-info { flex: 1; }
+    .price { font-weight: bold; color: #222; font-size: 18px; margin-top: 10px !important; }
+
+    .service-action { display: flex; flex-direction: column; align-items: center; width: 100%; }
+    @media(min-width: 576px) { .service-action { width: 140px; } }
+    .service-action img { width: 100px; height: 100px; object-fit: cover; border-radius: 8px; margin-bottom: 10px; }
+
+    .qty { width: 100%; margin-bottom: 8px; padding: 8px; border: 1px solid #ddd; border-radius: 6px; }
+    .add-btn {
+        width: 100%; padding: 10px; background: #ff9800; color: #fff;
+        border: none; border-radius: 8px; font-weight: 600; cursor: pointer;
+    }
+
+    .single-review-item {
+        padding: 12px 0; border-bottom: 1px solid #f0f0f0;
+    }
+    .single-review-item:last-child { border-bottom: none; }
+    .filled-star { color: #ffb400; font-size: 12px; }
+
+    .auto-message {
+        position: fixed; top: 20px; right: 20px; z-index: 1000;
+        padding: 15px 25px; background: #ffcc00; border-radius: 8px;
+    }
+</style>
+</head>
+
+<body>
+
+{% if messages %}
+    {% for message in messages %}
+    <div class="auto-message">{{ message }}</div>
+    {% endfor %}
+{% endif %}
+
+{% include 'header.html' %}
+
+<div class="top-search-container">
+    <div class="service-search">
+        <i class="fa fa-search"></i>
+        <input type="text" id="serviceSearch" placeholder="Search for oven repair, cleaning...">
+    </div>
+</div>
+
+<div class="main-wrapper">
+
+    <div class="left-sidebar">
+        <div class="card">
+            <h2 style="font-size: 20px; margin: 0 0 10px;">Washing Machine Services</h2>
+            <p style="color: #4caf50; font-weight: 600; margin: 0;">⭐ 4.9 (50K+ bookings)</p>
+        </div>
+
+        <div class="feedback-sidebar-container">
+            <h3 style="font-size: 16px; margin: 0 0 10px; display: flex; justify-content: space-between;">
+                User Reviews <i class="fa fa-comments" style="color: #ff9800;"></i>
+            </h3>
+            <div class="feedback-scroll-area">
+                {% for item in services %}
+                    {% for fb in item.feedbacks %}
+                    <div class="single-review-item">
+                        <div style="font-size: 13px; font-weight: 600;">
+                            <i class="fa fa-user-circle"></i> {{ fb.user.userprofile.fullname|default:fb.user.username }}
+                        </div>
+                        <div style="margin: 2px 0;">
+                            {% for i in "12345" %}
+                                <i class="fa fa-star {% if forloop.counter <= fb.rating %}filled-star{% else %}text-light{% endif %}"></i>
+                            {% endfor %}
+                        </div>
+                        <p style="font-size: 12px; color: #555; margin: 5px 0 0;">"{{ fb.message }}"</p>
+                        <small style="font-size: 10px; color: #999;">on {{ item.product_name }}</small>
+                    </div>
+                    {% empty %}
+                    {% endfor %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <div class="center-content">
+        <h2 style="margin-bottom: 20px; font-size: 20px;">Select a Service</h2>
+
+        {% for item in services %}
+       <div class="service-item-wrapper"
+     data-name="{{ item.product_name|lower }}"
+     data-details="{{ item.service_details|lower }} {{ item.extra_details|lower }} {{ item.details|lower }}">
+
+            <div class="service-row">
+                <div class="service-info">
+                <h3>{{ item.product_name }}</h3>
+                  <p>{{ item.service_details }}</p>
+                <p>{{ item.extra_details }}</p>
+                 <p>{{ item.details }}</p>
+                <p>⭐ {{ item.rating }}</p>
+                <p class="price" style="color:blue;">₹{{ item.price }}</p>
+            </div>
+
+                <div class="service-action">
+                    <img src="{{ item.product_image.url }}" alt="{{ item.product_name }}">
+                    <form method="POST" action="{% url 'users:add_to_cart' %}" style="width: 100%;">
+                        {% csrf_token %}
+                        <input type="hidden" name="service_name" value="{{ item.product_name }}">
+                        <input type="hidden" name="service_details" value="{{ item.service_details }}">
+                        <input type="hidden" name="details" value="{{ item.details }}">
+                          <input type="hidden" name="extra_details" value="{{ item.extra_details }}">
+
+                         <input type="hidden" name="price" value="{{ item.price }}">
+                        <input type="hidden" name="image" value="{{ item.product_image.url }}">
+                        <input type="number" name="quantity" class="qty" min="1" value="1">
+                        <button type="submit" class="add-btn">Add</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="right-card card">
+        <h3 style="margin-top: 0; font-size: 18px;">Your Cart</h3>
+        <hr style="border: 0; border-top: 1px solid #eee; margin: 15px 0;">
+        {% if cart_count > 0 %}
+            <p>🛒 {{ cart_count }} item{{ cart_count|pluralize }} added</p>
+            <a href="{% url 'users:cart' %}" class="add-btn" style="display:block; text-align:center; text-decoration:none;">
+                View Cart
+            </a>
+        {% else %}
+            <p style="text-align: center; color: #999;">Empty</p>
+        {% endif %}
+    </div>
+
+</div>
+
+{% include 'footer.html' %}
+
+<script>
+document.getElementById("serviceSearch").addEventListener("keyup", function () {
+    let val = this.value.toLowerCase();
+
+    document.querySelectorAll(".service-item-wrapper").forEach(el => {
+        let name = el.dataset.name || "";
+        let details = el.dataset.details || "";
+
+        if (name.includes(val) || details.includes(val)) {
+            el.style.display = "block";
+        } else {
+            el.style.display = "none";
+        }
+    });
+});
+</script>
+
+</body>
+</html>

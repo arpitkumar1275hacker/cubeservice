@@ -1,0 +1,175 @@
+{% load custom_filters %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Cancelled Orders</title>
+
+<link rel="stylesheet"
+ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+    body{
+    background:#f4f6f8;
+    font-family:'Segoe UI',sans-serif;
+}
+
+/* ===== DASHBOARD CONTENT ===== */
+.content{
+    
+}
+
+/* ===== TITLE ===== */
+h2{
+    margin-bottom:20px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+/* ===== SEARCH INPUT ===== */
+#searchInput{
+    width:100%;
+    max-width:400px;
+    padding:12px 14px;
+    margin-bottom:20px;
+    border-radius:8px;
+    border:1px solid #ddd;
+    font-size:15px;
+}
+
+/* ===== TABLE WRAPPER ===== */
+.table-wrapper{
+    background:#fff;
+    padding:15px;
+    border-radius:10px;
+    box-shadow:0 6px 20px rgba(0,0,0,0.08);
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+}
+
+/* ===== TABLE ===== */
+table{
+    width:100%;
+    min-width:1200px;   /* forces horizontal scroll */
+    border-collapse:collapse;
+}
+
+th, td{
+    padding:12px;
+    border-bottom:1px solid #eee;
+    font-size:14px;
+    text-align:left;
+    white-space:nowrap;
+}
+
+th{
+    background:#f1f3f6;
+    font-weight:600;
+}
+
+tr:nth-child(even){
+    background:#fafafa;
+}
+
+/* ===== MOBILE ===== */
+@media(max-width:992px){
+    .content{
+        margin-left:0;
+        padding-top:80px;
+    }
+
+    #searchInput{
+        max-width:100%;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+{% include 'headerr.html' %}
+<div class="content">
+
+<h2><i class="fas fa-ban"></i> Cancelled Orders</h2>
+
+<input type="text" id="searchInput"
+ placeholder="🔍 Search Order / Customer / Service">
+<div class="table-wrapper">
+<table id="orderTable">
+<thead>
+<tr>
+    <th>Order ID</th>
+    <th>Cancelled At</th>
+    <th>Customer</th>
+    <th>Email</th>
+    <th>Phone</th>
+    <th>User Pincode</th>
+    <th>Service / Product</th>
+    <th>Qty</th>
+    <th>Price</th>
+    <th>Total</th>
+    <th>Reason</th>
+    <th>Service Center</th>
+    <th>Author</th>
+    <th>Service Center Mobile</th>
+    <th>Pincode</th>
+</tr>
+</thead>
+
+<tbody>
+{% for c in cancelled_orders %}
+    {% with order=orders|get_item:c.order_id %}
+        {% if order %}
+            {% with sc=servicecenter_map|get_item:order.pincode %}
+                {% for item in order.items.all %}
+                <tr class="search-row">
+                    <td>#{{ order.id }}</td>
+                    <td>{{ c.cancelled_at|date:"d M Y h:i A" }}</td>
+                    <td>{{ c.user.userprofile.fullname }}</td>
+                    <td>{{ order.email }}</td>
+                    <td>{{ order.mobile }}</td>
+                    <td>{{ order.pincode }}</td>
+                    <td>{{ item.service_name }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>₹{{ item.price }}</td>
+                    <td>₹{{ order.total_price }}</td>
+                    <td>{{ c.reason|default:"—" }}</td>
+
+                    {% if sc %}
+                        <td>{{ sc.servicecenter_name }}</td>
+                        <td>{{ sc.author_name }}</td>
+                        <td>{{ sc.mobile }}</td>
+                         <td>{{ sc.pincode }}</td>
+                    {% else %}
+                        <td colspan="3" style="color:red;">No Service Center</td>
+                    {% endif %}
+                </tr>
+                {% endfor %}
+            {% endwith %}
+        {% endif %}
+    {% endwith %}
+{% endfor %}
+</tbody>
+
+
+</tbody>
+
+</table>
+
+</div>
+
+<script>
+document.getElementById("searchInput").addEventListener("keyup", function () {
+    let value = this.value.toLowerCase();
+    document.querySelectorAll(".search-row").forEach(row => {
+        row.style.display = row.innerText.toLowerCase().includes(value)
+            ? "" : "none";
+    });
+});
+</script>
+
+</body>
+</html>

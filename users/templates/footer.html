@@ -1,0 +1,206 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CUBEService Footer</title>
+
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+/* ================= FOOTER BASE ================= */
+.footer{
+    background:#0f172a; /* dark navy */
+    color:#e5e7eb;
+    padding:70px 80px 30px;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto;
+}
+
+.footer-container{
+    display:grid;
+    grid-template-columns: 1.8fr 1fr 1fr 1fr;
+    gap:50px;
+}
+
+/* ================= BRAND ================= */
+.footer-brand{
+    max-width:320px;
+}
+
+.footer-logo{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    font-size:22px;
+    font-weight:700;
+    margin-bottom:15px;
+}
+
+.logo-box{
+    background:black;
+    padding:10px 14px;
+    border-radius:8px;
+    color:#fff;
+}
+
+.footer-brand p{
+    font-size:14px;
+    line-height:1.7;
+    color:#cbd5f5;
+}
+
+/* ================= COLUMNS ================= */
+.footer-col h4{
+    font-size:15px;
+    margin-bottom:18px;
+    color:#fff;
+    font-weight:600;
+}
+
+.footer-col a{
+    display:block;
+    text-decoration:none;
+    color:#cbd5f5;
+    font-size:14px;
+    margin-bottom:12px;
+    transition:0.3s;
+}
+
+.footer-col a:hover{
+    color:#60a5fa;
+    transform: translateX(4px);
+}
+
+/* ================= SOCIAL ================= */
+.social-icons{
+    display:flex;
+    gap:14px;
+    margin-bottom:25px;
+}
+
+.social-icons a{
+    width:38px;
+    height:38px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:50%;
+    background:#1e293b;
+    color:#e5e7eb;
+    transition:0.3s;
+    font-size:15px;
+}
+
+.social-icons a:hover{
+    background:#2563eb;
+    color:#fff;
+}
+
+/* ================= APP BUTTONS ================= */
+.store-buttons img{
+    width:150px;
+    margin-bottom:12px;
+    cursor:pointer;
+}
+
+/* ================= DIVIDER ================= */
+.footer hr{
+    margin:50px 0 20px;
+    border:none;
+    border-top:1px solid #1e293b;
+}
+
+/* ================= FOOTER BOTTOM ================= */
+.footer-bottom{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+    font-size:13px;
+    color:#94a3b8;
+}
+
+/* ================= RESPONSIVE ================= */
+@media(max-width:900px){
+    .footer-container{
+        grid-template-columns:1fr 1fr;
+    }
+}
+
+@media(max-width:520px){
+    .footer-container{
+        grid-template-columns:1fr;
+    }
+    .footer{
+        padding:50px 20px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<footer class="footer">
+    <div class="footer-container">
+
+        <!-- BRAND -->
+        <div class="footer-brand">
+            <div class="footer-logo">
+                <div class="logo-box">CS</div>
+                Cube Service
+            </div>
+            <p>
+                CUBEService connects customers with trusted local professionals
+                for home services, repairs, and maintenance — fast, reliable,
+                and hassle-free.
+            </p>
+        </div>
+
+        <!-- COMPANY -->
+        <div class="footer-col">
+            <h4>Company</h4>
+            <a href="{% url 'users:about_us' %}">About Us</a>
+            <a href="{% url 'users:investor_relations' %}">Investor Relations</a>
+            <a href="{% url 'users:policy' %}">Terms & Conditions</a>
+            <a href="{% url 'users:policy' %}">Privacy Policy</a>
+            <a href="{% url 'users:policy' %}">Anti-discrimination Policy</a>
+            <a href="{% url 'users:esg_impact' %}">ESG Impact</a>
+            <a href="{% url 'users:contact' %}">Careers</a>
+        </div>
+
+        <!-- CUSTOMERS -->
+        <div class="footer-col">
+            <h4>For Customers</h4>
+            <a href="{% url 'users:all_services' %}">Services Near You</a>
+            <a href="{% url 'users:contact' %}">Contact Us</a>
+        </div>
+
+        <!-- SOCIAL -->
+        <div class="footer-col">
+            <h4>Connect With Us</h4>
+            <div class="social-icons">
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+
+            <div class="store-buttons">
+                <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg">
+            </div>
+        </div>
+
+    </div>
+
+    <hr>
+
+    <!-- COPYRIGHT -->
+    <div class="footer-bottom">
+        <p>* As on December 31, 2024</p>
+        <p>© 2025 CUBEService Limited. All rights reserved.</p>
+    </div>
+</footer>
+
+</body>
+</html>

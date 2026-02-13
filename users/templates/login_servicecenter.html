@@ -1,0 +1,232 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Sign Up</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet"
+ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI', sans-serif;
+}
+
+body{
+    background:#f3f4f6;
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+/* OUTER CARD */
+.container{
+    width:1100px;
+    max-width:95%;
+    background:#ffffff;
+    border-radius:20px;
+    box-shadow:0 25px 50px rgba(0,0,0,0.15);
+    padding:50px;
+}
+
+/* INNER CARD */
+.card{
+    background:#ffffff;
+    border-radius:16px;
+    box-shadow:0 15px 35px rgba(0,0,0,0.08);
+    display:flex;
+    align-items:center;
+    padding:50px;
+}
+
+/* LEFT IMAGE */
+.left{
+    width:50%;
+    display:flex;
+    justify-content:center;
+}
+
+.left img{
+    width:80%;
+}
+
+/* RIGHT FORM */
+.right{
+    width:50%;
+    padding-left:40px;
+}
+
+.right h2{
+    font-size:32px;
+    margin-bottom:30px;
+}
+
+/* INPUT ROW */
+.input-box{
+    position:relative;
+    margin-bottom:22px;
+}
+
+.input-box input{
+    width:100%;
+    padding:12px 40px 12px 40px;
+    border:none;
+    border-bottom:1px solid #d1d5db;
+    font-size:14px;
+    outline:none;
+}
+
+.input-box i{
+    position:absolute;
+    top:50%;
+    transform:translateY(-50%);
+    color:#9ca3af;
+}
+
+.input-box .icon-left{
+    left:10px;
+}
+
+.input-box .icon-right{
+    right:10px;
+}
+
+/* REMEMBER */
+.remember{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-size:14px;
+    margin:15px 0 30px;
+}
+
+/* BUTTON */
+.btn{
+    background:#6ba8e5;
+    color:#fff;
+    border:none;
+    padding:12px 36px;
+    font-size:14px;
+    border-radius:6px;
+    cursor:pointer;
+}
+
+.btn:hover{
+    background:#4f8fd1;
+}
+
+/* CREATE ACCOUNT */
+.create{
+    margin-top:25px;
+    font-size:14px;
+}
+
+.create a{
+    color:#2563eb;
+    text-decoration:none;
+}
+
+/* SOCIAL */
+.social{
+    margin-top:30px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    font-size:14px;
+    color:#6b7280;
+}
+
+.social a{
+    width:32px;
+    height:32px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#fff;
+    border-radius:4px;
+    text-decoration:none;
+    font-size:14px;
+}
+
+.fb{background:#1877f2;}
+.tw{background:#1da1f2;}
+.gl{background:#db4437;}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+    .card{
+        flex-direction:column;
+        text-align:center;
+    }
+    .left,
+    .right{
+        width:100%;
+    }
+    .right{
+        padding-left:0;
+        margin-top:30px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <div class="card">
+
+        <!-- LEFT -->
+        <div class="left">
+            <img src="{% static 'images/im.png' %}" alt="illustration">
+        </div>
+
+        <!-- RIGHT -->
+        <div class="right">
+            <h2>Sign up</h2>
+ <form method="POST" action="{% url 'users:login_servicecenter' %}">
+      {% csrf_token %}
+
+            <div class="input-box">
+                <i class="fa fa-user icon-left"></i>
+                <input type="text" name="username" placeholder="Username">
+                <i class="fa fa-id-card icon-right"></i>
+            </div>
+
+            <div class="input-box">
+                <i class="fa fa-lock icon-left"></i>
+                <input type="password" name="password" placeholder="Password">
+                <i class="fa fa-key icon-right"></i>
+            </div>
+   
+
+            <div class="remember">
+                <input type="checkbox">
+                <label>Remember me</label>
+            </div>
+
+            <button class="btn">Log in</button>
+             </form>
+
+            <div class="create">
+                <a href="#">Create an account</a>
+            </div>
+
+            <div class="social">
+                <span>Or login with</span>
+                <a href="#" class="fb"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" class="tw"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="gl"><i class="fab fa-google"></i></a>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,164 @@
+{% load custom_filters %}
+
+{% block content %}
+
+<style>
+/* ===== GLOBAL ===== */
+body{
+    background:#f4f6f8;
+    font-family:'Segoe UI', sans-serif;
+    margin:0;
+}
+
+/* ===== DASHBOARD CONTENT ===== */
+.content{
+    margin-left:260px;
+    
+}
+
+/* ===== TITLE ===== */
+.page-title{
+    font-size:24px;
+    font-weight:600;
+    margin-bottom:20px;
+}
+
+/* ===== TABLE OUTER WRAPPER ===== */
+.table-center{
+    display:flex;
+    justify-content:center;
+}
+
+/* ===== TABLE CONTAINER ===== */
+.table-box{
+    background:#fff;
+    width:100%;
+    max-width:1100px;
+    border-radius:12px;
+    box-shadow:0 6px 20px rgba(0,0,0,0.08);
+    overflow:hidden;
+}
+
+/* ===== SCROLL AREAS ===== */
+.table-scroll-x{
+    overflow-x:auto;
+}
+
+.table-scroll-y{
+    max-height:520px;
+    overflow-y:auto;
+}
+
+/* ===== TABLE ===== */
+table{
+    width:100%;
+    min-width:950px;
+    border-collapse:collapse;
+}
+
+th, td{
+    padding:12px 14px;
+    font-size:14px;
+    border-bottom:1px solid #eee;
+    white-space:nowrap;
+    text-align:left;
+}
+
+th{
+    background:#f1f3f6;
+    font-weight:600;
+    position:sticky;
+    top:0;
+    z-index:2;
+}
+
+tbody tr:nth-child(even){
+    background:#fafafa;
+}
+
+tbody tr:hover{
+    background:#fde8e8;
+}
+
+/* ===== ADDRESS TRUNCATE ===== */
+.address{
+    max-width:220px;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+/* ===== EMPTY ROW ===== */
+.empty-row{
+    text-align:center;
+    padding:30px;
+    color:#777;
+}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:1024px){
+    .content{
+        margin-left:0;
+        padding-top:90px;
+    }
+}
+
+@media(max-width:600px){
+    .page-title{
+        font-size:20px;
+    }
+}
+</style>
+{% include 'serviceheader.html' %}
+<div class="content">
+
+    <div class="page-title">Cancelled Orders</div>
+
+    <div class="table-center">
+        <div class="table-box">
+
+            <div class="table-scroll-x">
+                <div class="table-scroll-y">
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Customer</th>
+                                <th>Mobile</th>
+                                <th>Address</th>
+                                 <th>Pin Code</th>
+                                <th>Reason</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for order in cancelled_orders %}
+                            <tr>
+                                <td><strong>#{{ order.id }}</strong></td>
+                                <td>{{ order.fullname }}</td>
+                                <td>{{ order.mobile }}</td>
+                                <td class="address">{{ order.address }}</td>
+                                  <td class="address">{{ order.pincode }}</td>
+                                <td style="color:#dc2626;">
+                                    {{ cancel_map|get_item:order.id }}
+                                </td>
+                                <td>{{ order.created_at|date:"d M Y" }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="6" class="empty-row">
+                                    No cancelled orders for your area
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

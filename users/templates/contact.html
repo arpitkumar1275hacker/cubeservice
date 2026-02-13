@@ -1,0 +1,221 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Contact Us</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:'Calibri', sans-serif;
+            color:#000;
+        }
+
+        /* LIGHT WHEAT BACKGROUND */
+        body{
+            background:linear-gradient(135deg,#fff6e5,#f5e6c8,#ead8b1);
+        }
+
+        /* HERO */
+        .hero{
+            text-align:center;
+            padding:70px 20px;
+        }
+
+        .hero h1{
+            font-size:42px;
+            font-weight:600;
+        }
+
+        .hero p{
+            opacity:0.75;
+        }
+
+        /* MAIN FRAME – LIGHT DARK WHEAT */
+        .contact-frame{
+            max-width:1200px;
+            margin:0 auto 60px;
+            padding:40px;
+            display:grid;
+            grid-template-columns:1fr 1fr;
+            gap:35px;
+            background:rgba(234, 216, 177, 0.85); /* wheat dark */
+            border-radius:22px;
+            box-shadow:0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        /* FORM */
+        .form-section h2{
+            margin-bottom:20px;
+            font-weight:500;
+        }
+
+        .row{
+            display:flex;
+            gap:15px;
+        }
+
+        input, textarea{
+            width:100%;
+            padding:13px;
+            border:none;
+            border-radius:10px;
+            background:#fffaf0;
+            color:#000;
+            margin-bottom:15px;
+            outline:none;
+            box-shadow:0 2px 6px rgba(0,0,0,0.12);
+        }
+
+        input::placeholder,
+        textarea::placeholder{
+            color:#555;
+        }
+
+        /* BUTTON – WHEAT COMBINATION */
+        button{
+            width:100%;
+            padding:14px;
+            border:none;
+            border-radius:12px;
+            background:linear-gradient(135deg,#e6c48a,#d2b48c);
+            color:#000;
+            font-size:15px;
+            font-weight:500;
+            cursor:pointer;
+            transition:0.3s;
+        }
+
+        button:hover{
+            transform:translateY(-2px);
+            box-shadow:0 8px 20px rgba(0,0,0,0.2);
+        }
+
+        .success{
+            background:#c7f0d8;
+            padding:10px;
+            border-radius:8px;
+            margin-bottom:15px;
+            font-size:14px;
+        }
+
+        /* INFO */
+        .info-section h2{
+            margin-bottom:10px;
+            font-weight:500;
+        }
+
+        .info-section p{
+            opacity:0.8;
+        }
+
+        .info-box{
+            display:flex;
+            gap:12px;
+            margin:14px 0;
+            font-size:15px;
+            align-items:flex-start;
+        }
+
+        /* MAP */
+        iframe{
+            width:100%;
+            height:220px;
+            border:none;
+            border-radius:14px;
+            margin-top:15px;
+        }
+
+        /* RESPONSIVE */
+        @media(max-width:900px){
+            .contact-frame{
+                grid-template-columns:1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<section class="hero">
+    <h1>Contact Us</h1>
+    <p>Product service support you can rely on</p>
+</section>
+
+<section class="contact-frame">
+
+    <!-- LEFT: CONTACT FORM -->
+    <div class="form-section">
+        <h2>Send Message</h2>
+
+        {% if messages %}
+            {% for message in messages %}
+                <p class="success">{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+{% include 'header.html' %}
+        <form method="POST">
+            {% csrf_token %}
+
+            <div class="row">
+                <input type="text" name="first_name" placeholder="First Name" required>
+                <input type="text" name="last_name" placeholder="Last Name" required>
+            </div>
+   <input 
+        type="tel" 
+        name="mobile" 
+        placeholder="Mobile Number" 
+        pattern="[0-9]{10}" 
+        maxlength="10"
+        required
+    >
+       <input type="text" name="pincode" placeholder="Enter Pincode" required>
+ 
+            <input type="email" name="email" placeholder="Email Address" required>
+            <input type="text" name="subject" placeholder="Subject">
+            <textarea rows="5" name="message" placeholder="Your Message" required></textarea>
+
+            <button type="submit">Send Message</button>
+        </form>
+    </div>
+
+    <!-- RIGHT: ADDRESS + MAP -->
+    <div class="info-section">
+        <h2>Get In Touch</h2>
+        <p>We’re available for service & support</p>
+
+        <div class="info-box">
+            <span>📞</span>
+            <p>9211411468</p>
+        </div>
+
+        <div class="info-box">
+            <span>✉️</span>
+            <p>danish@cubeservice.in</p>
+        </div>
+
+        <div class="info-box">
+            <span>📍</span>
+            <p>
+                Sector D, Jankipuram,<br>
+                Kursi Road,<br>
+                Lucknow, Uttar Pradesh
+            </p>
+        </div>
+
+        <iframe 
+            src="https://www.google.com/maps?q=Jankipuram+Lucknow&output=embed"
+            loading="lazy">
+        </iframe>
+    </div>
+
+</section>
+
+</body>
+</html>

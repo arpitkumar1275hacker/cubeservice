@@ -1,0 +1,462 @@
+  {% include 'header.html' %}
+<!-- ================= SEARCH BAR ================= -->
+<section class="search-section" >
+  <div class="search-container" >
+    <input 
+      type="text" 
+      id="searchInput" 
+      placeholder="Search for services, products, repairs..."
+      onkeyup="filterProducts()"
+    >
+    <button type="button">🔍</button>
+  </div>
+</section>
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cube Service | Home Services</title>
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+
+
+
+<style>
+  /* ================= AUTH MODAL ================= */
+body{
+    padding-top: 60px; /* header ki height ke according adjust karein */
+}
+
+/* Tablet */
+@media (max-width: 1024px){
+    body{
+        padding-top: 170px;
+    }
+}
+
+/* Mobile */
+@media (max-width: 768px){
+    body{
+        padding-top: 10px;
+    }
+}
+
+/* Small Mobile */
+@media (max-width: 480px){
+    body{
+        padding-top: 100px;
+    }
+}
+
+/* ================= SEARCH BAR ================= */
+.search-section{
+    width:100%;
+    padding:29px 13px;
+    background:#f4f6fb;
+    position:sticky;
+    top:60px; /* header ke niche fix */
+    z-index:99;
+   
+}
+
+.search-container{
+    max-width:900px;
+    margin:auto;
+    display:flex;
+    align-items:center;
+    background:#f4f6f8;
+    border-radius:30px;
+    padding:6px 10px;
+     position:sticky;
+}
+
+.search-container input{
+    flex:1;
+    border:1px solid:black;
+    
+    padding:12px 25px;
+    font-size:15px;
+    outline:black;
+    
+}
+
+.search-container button{
+        
+    color:#fff;
+    border:none;
+    padding:10px 18px;
+    border-radius:25px;
+    cursor:pointer;
+    font-size:16px;
+}
+
+/* Mobile */
+@media (max-width:768px){
+    .search-container{
+        max-width:100%;
+        margin-top:94px;
+    }
+}
+
+/* Laptop */
+/* ================= BANNER ================= */
+
+/* ================= BANNER OPTIMIZATION ================= */
+.banner {
+    width: 100%;
+    padding: 10px 0; /* Thoda gap top-bottom se */
+    background: #fff;
+}
+
+.img-slider {
+    position: relative;
+    width: 100%;
+    /* Aspect ratio se height automatically photo ke hisaab se adjust hogi */
+    aspect-ratio: 16 / 7; 
+    max-height: 500px; /* Laptop par bahut bada na dikhe */
+    overflow: hidden;
+}
+
+.img-slide {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 0.8s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.img-slide.active {
+    opacity: 1;
+}
+
+.img-slide img {
+    width: 100%;
+    height: 100%;
+    /* Isse photo stretch nahi hogi aur poori dikhegi */
+    object-fit: fill; 
+    border-radius: 0; /* Agar rounded look chahiye toh 15px kar sakte hain */
+}
+
+/* Mobile Adjustment */
+@media (max-width: 768px) {
+    .img-slider {
+        aspect-ratio: 16 / 9; /* Mobile ke liye thoda rectangular ratio */
+        height: auto;
+    }
+    
+    .search-section {
+        padding: 15px 10px;
+    }
+}
+/* ================= RESPONSIVE ================= */
+
+/* ===== WHATSAPP FLOAT BUTTON ===== */
+.whatsapp-float{
+    position:fixed;
+    bottom:90px;
+    right:20px;
+    width:60px;
+    height:60px;
+    background:#25D366;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    box-shadow:0 10px 25px rgba(0,0,0,0.3);
+    z-index:9999;
+    transition:0.3s;
+}
+
+.whatsapp-float img{
+    width:35px;
+    height:35px;
+}
+
+.whatsapp-float:hover{
+    transform:scale(1.1);
+    box-shadow:0 15px 35px rgba(0,0,0,0.4);
+}
+
+/* Mobile Adjustment */
+@media(max-width:768px){
+    .whatsapp-float{
+        width:55px;
+        height:55px;
+        bottom:70px;
+        right:15px;
+    }
+
+    .whatsapp-float img{
+        width:30px;
+        height:30px;
+    }
+}
+/* ===== PHONE FLOAT BUTTON ===== */
+.phone-float{
+    position:fixed;
+    bottom:20px;
+    right:20px;
+    width:60px;
+    height:60px;
+    background:#2563eb; /* blue */
+    color:#fff;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:26px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.3);
+    z-index:9999;
+    transition:0.3s;
+}
+
+.phone-float:hover{
+    transform:scale(1.1);
+    box-shadow:0 15px 35px rgba(0,0,0,0.4);
+}
+
+/* Mobile */
+@media(max-width:768px){
+    .phone-float{
+        width:55px;
+        height:55px;
+        font-size:22px;
+        bottom:15px;
+        right:15px;
+    }
+}
+
+</style>
+</head>
+    
+  {% block content %}
+<body>
+  {% if messages %}
+<div style="margin: 10px 0;">
+    {% for message in messages %}
+   <div class="auto-message" style="padding: 10px; background: #ffcc00; color: #000; border-radius: 5px;">
+    {{ message }}
+</div>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+  
+
+<!-------Banner-->
+
+<section class="categories" style="margin-top:45px;">
+    <h2>Home Services & Products</h2>
+    <div class="category-grid">
+        {% for service in services %}
+          <a href="/{{ service.productName|lower }}">
+            <div class="category">
+                <img src="{{ service.productImage.url }}" alt="">
+                <p>{{ service.productName }}</p>
+            </div>
+          </a>
+        {% empty %}
+            <p>No services available</p>
+        {% endfor %}
+    </div>
+</section> 
+   <section class="banner">
+ <div class="img-slider">
+        {% for slide in sliders %}
+      <a href="/{{ slide.link_name }}"><div class="img-slide {% if forloop.first %}active{% endif %}">
+            <img src="{{ slide.image.url }}" alt="Banner">
+         
+        </div></a>
+        {% endfor %}
+    </div>
+</section>
+
+
+
+
+
+
+
+
+<section class="popular-bookings">
+  <h2>Most Popular Bookings</h2>
+
+  <div class="booking-slider">
+    {% for service in popular_services %}
+     <a href="/{{ service.link }}"><div class="booking-card">
+        <div class="booking-img"
+             style="background-image:url('{{ service.product_image.url }}')">
+        </div>
+        
+        <h3 class="ha">{{ service.product_name }}</h3>
+        <p class="ha">{{ service.service_details|truncatechars:50 }}</p>
+        <p class="raiting">⭐ {{ service.rating }}/5 </p>
+        <div class="booking-price" style="margin: 12px; margin:10px 0;">₹{{ service.price }}</div>
+
+      
+      </div></a>
+    {% empty %}
+      <p>No popular bookings available</p>
+    {% endfor %}
+  </div>
+
+  <a href="{% url 'users:all_services' %}"><div class="see">See All →</div></a>
+</section>
+<!-- ADVERTISEMENT SECTION -->
+
+    <!-- ================= DYNAMIC ADVERTISEMENT ================= -->
+<section class="ad">
+    <div class="ad-slider">
+
+        {% for ad in ads %}
+            <div class="ad-slide {% if forloop.first %}active{% endif %}">
+                <img src="{{ ad.image.url }}" alt="Advertisement">
+            </div>
+        {% empty %}
+            <!-- fallback if no ads -->
+            <div class="ad-slide active">
+                <img src="{% static 'images/ROW.webp' %}" alt="Default Ad">
+            </div>
+        {% endfor %}
+
+        
+
+    </div>
+</section>
+
+
+      
+    </div>
+
+<section class="popular-bookings">
+  <h2>Kitchen Product Services</h2>
+
+  <div class="booking-slider">
+    {% for service in product_services %}
+     <a href="/{{ service.link }}"><div class="booking-card">
+        <div class="booking-img"
+             style="background-image:url('{{ service.productImage.url }}')">
+        </div>
+
+        <h3>{{ service.productName }}</h3>
+        <p>{{ service.serviceDetails|truncatechars:50 }}</p>
+        <p class="raiting">⭐ {{ service.rating }}/5 </p>
+        <div class="booking-price" style="margin: 12px; margin:10px 0;">₹{{ service.price }}</div>
+
+      
+      </div></a>
+    {% empty %}
+      <p>No popular bookings available</p>
+    {% endfor %}
+  </div>
+  <a href="{% url 'users:all_services' %}"><div class="see">See All →</div></a>
+</section>
+
+
+<section class="popular-bookings">
+  <h2>Sessional Product Services</h2>
+
+  <div class="booking-slider">
+    {% for service in  sessional_services %}
+      <a href="/{{ service.link }}"><div class="booking-card">
+        <div class="booking-img"
+             style="background-image:url('{{ service.productImage.url }}')">
+        </div>
+
+        <h3>{{ service.productName }}</h3>
+        <p>{{ service.serviceDetails|truncatechars:50 }}</p>
+        <p class="raiting">⭐ {{ service.rating }}/5 </p>
+        <div class="booking-price" style="margin: 12px; margin:10px 0;">₹{{ service.price }}</div>
+
+      
+      </div></a>
+    {% empty %}
+      <p>No popular bookings available</p>
+    {% endfor %}
+  </div>
+</section>
+
+  
+
+
+
+  <!-- ================= DYNAMIC ADVERTISEMENT 1 ================= -->
+<section class="ad">
+    <div class="ad-slider">
+
+        {% for ad in ads1 %}
+            <div class="ad-slide {% if forloop.first %}active{% endif %}">
+                <img src="{{ ad.image.url }}" alt="Advertisement 1">
+            </div>
+        {% empty %}
+            <!-- fallback if no ads -->
+            <div class="ad-slide active">
+                <img src="{% static 'images/ROW.webp' %}" alt="Default Ad">
+            </div>
+        {% endfor %}
+
+    </div>
+</section>
+
+{% endblock %}
+{% include 'footer.html' %}
+<script>
+/* Slider Logic Only */
+    const slides = document.querySelectorAll('.img-slide');
+    let currentSlide = 0;
+
+    if(slides.length > 0) {
+        setInterval(() => {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (currentSlide + 1) % slides.length;
+            slides[currentSlide].classList.add('active');
+        }, 4000);
+    }
+
+    function filterProducts() {
+    let input = document.getElementById("searchInput").value.toLowerCase();
+    let cards = document.querySelectorAll(".booking-card");
+
+    cards.forEach(card => {
+        let text = card.innerText.toLowerCase();
+
+        if (text.includes(input)) {
+            card.style.display = "block";
+        } else {
+            card.style.display = "none";
+        }
+    });
+}
+</script>
+
+
+
+
+<!-- WhatsApp Floating Button -->
+<a href="https://wa.me/919876543210?text=Hi%20CubeService,%20I%20need%20help"
+   class="whatsapp-float"
+   target="_blank"
+   title="Chat on WhatsApp">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"
+         alt="WhatsApp Chat">
+</a>
+
+
+<!-- Phone Floating Button -->
+<a href="tel:9555286398"
+   class="phone-float"
+   title="Call Us">
+    <i class="fas fa-phone"></i>
+</a>
+
+
+</body>
+</html>

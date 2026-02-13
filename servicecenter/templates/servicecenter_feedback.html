@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Customer Feedback</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet"
+ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+body{
+    background:#f4f6f8;
+    font-family:'Segoe UI', sans-serif;
+    margin:0;
+    padding:20px;
+}
+
+/* PAGE TITLE */
+.page-title{
+    font-size:24px;
+    font-weight:600;
+    margin-bottom:20px;
+}
+
+/* GRID */
+.feedback-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(380px, 1fr));
+    gap:24px;
+    max-width:200px;
+    margin:auto;
+}
+
+.feedback-card{
+    background:#ffffff;
+    border-radius:14px;
+    padding:22px;
+    box-shadow:0 6px 14px rgba(0,0,0,0.1);
+    transition:transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.feedback-card:hover{
+    transform:translateY(-4px);
+    box-shadow:0 10px 22px rgba(0,0,0,0.15);
+}
+
+
+/* HEADER */
+.card-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:10px;
+}
+
+.service-name{
+    font-size:16px;
+    font-weight:600;
+}
+
+/* STARS */
+.stars{
+    color:#fbbf24;
+    font-size:14px;
+}
+
+/* CONTENT */
+.feedback-message{
+    font-size:14px;
+    color:#374151;
+    margin:10px 0;
+}
+
+/* FOOTER */
+.card-footer{
+    display:flex;
+    justify-content:space-between;
+    font-size:13px;
+    color:#6b7280;
+    margin-top:10px;
+}
+
+/* EMPTY STATE */
+.empty-box{
+    background:#ffffff;
+    padding:40px;
+    text-align:center;
+    border-radius:12px;
+    box-shadow:0 4px 10px rgba(0,0,0,0.08);
+}
+
+.empty-box i{
+    font-size:40px;
+    color:#9ca3af;
+    margin-bottom:10px;
+}
+</style>
+</head>
+
+<body>
+{% include 'serviceheader.html' %}
+<div class="page-title">
+    Customer Feedback – Pincode {{ servicecenter.pincode }}
+</div>
+
+{% if feedbacks %}
+<div class="feedback-grid">
+
+    {% for fb in feedbacks %}
+    <div class="feedback-card">
+
+        <div class="card-header">
+            <div class="service-name">{{ fb.service_name }}</div>
+
+            <div class="stars">
+                {% for i in "12345" %}
+                    {% if forloop.counter <= fb.rating %}
+                        <i class="fa-solid fa-star"></i>
+                    {% else %}
+                        <i class="fa-regular fa-star"></i>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="feedback-message">
+            {{ fb.message }}
+        </div>
+
+        <div class="card-footer">
+            <div>
+                <i class="fa-solid fa-user"></i>
+                {{ fb.user.username }}
+            </div>
+            <div>
+                <i class="fa-regular fa-clock"></i>
+                {{ fb.created_at|date:"d M Y" }}
+            </div>
+        </div>
+
+    </div>
+    {% endfor %}
+
+</div>
+
+{% else %}
+<div class="empty-box">
+    <i class="fa-regular fa-face-frown"></i>
+    <h3>No Feedback Yet</h3>
+    <p>Customers from your pincode haven’t submitted feedback.</p>
+</div>
+{% endif %}
+
+</body>
+</html>

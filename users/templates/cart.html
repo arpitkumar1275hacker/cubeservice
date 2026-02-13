@@ -1,0 +1,186 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Your Cart</title>
+{% load static %}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<link rel="stylesheet" href="{% static 'css/pr.css' %}">
+
+<style>
+body{
+    padding-top: 60px; /* header ki height ke according adjust karein */
+}
+
+/* Tablet */
+@media (max-width: 1024px){
+    body{
+        padding-top: 170px;
+    }
+}
+
+/* Mobile */
+@media (max-width: 768px){
+    body{
+        padding-top: 10px;
+    }
+}
+
+/* Small Mobile */
+@media (max-width: 480px){
+    body{
+        padding-top: 100px;
+    }
+}
+
+.cart-container {
+    max-width: 1100px;
+    margin: 30px auto;
+    background: #fff;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    padding-top: 100px;
+}
+
+.cart-title {
+    font-size: 26px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.cart-item {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 15px 0;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.cart-item:last-child {
+    border-bottom: none;
+}
+
+.cart-image img {
+    width: 90px;
+    border-radius: 8px;
+}
+
+.cart-details {
+    flex: 1;
+}
+
+.cart-details h4 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.cart-details p {
+    margin: 5px 0;
+    color: #555;
+    font-size: 14px;
+}
+
+.cart-price {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+}
+
+.cart-qty {
+    font-size: 15px;
+}
+
+.cart-total {
+    text-align: right;
+    margin-top: 25px;
+}
+
+.cart-total h3 {
+    font-size: 22px;
+    margin-bottom: 15px;
+}
+
+.place-order-btn {
+    background: #ff9800;
+    color: #fff;
+    padding: 14px 30px;
+    border: none;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.place-order-btn:hover {
+    background: #e68900;
+}
+
+.empty-cart {
+    text-align: center;
+    padding: 50px 0;
+    font-size: 18px;
+    color: #777;
+}
+</style>
+</head>
+
+<body>
+
+{% include 'header.html' %}
+
+<div class="cart-container">
+
+    <div class="cart-title">🛒 Shopping Cart</div>
+
+    {% if cart_items %}
+    
+        {% for item in cart_items %}
+        <div class="cart-item">
+            
+            <div class="cart-image">
+                <img src="{{ item.image }}" alt="{{ item.service_name }}">
+            </div>
+   <div class="cart-details">
+        <h4>{{ item.service_name }}</h4>
+        <p>{{ item.service_details }}</p>
+        <p>{{ item.details }}</p>
+       
+        <div class="cart-qty">Quantity: {{ item.quantity }}</div>
+
+        <!-- Remove button -->
+        <form action="{% url 'users:remove_from_cart' item.id %}" method="post" style="margin-top:10px;">
+            {% csrf_token %}
+            <button type="submit" class="remove-btn">❌ Remove</button>
+        </form>
+    </div>
+
+    <div class="cart-price">
+        ₹{{ item.price }}
+    </div>
+
+</div>
+        {% endfor %}
+
+        <div class="cart-total">
+            <h3>Total: ₹{{ total_price }}</h3>
+          <a href="{% url 'users:create_order' %}">
+    <button class="place-order-btn">Make Order</button>
+</a>
+
+        </div>
+
+    {% else %}
+        <div class="empty-cart">
+            🛍️ Your cart is empty
+        </div>
+    {% endif %}
+
+</div>
+{% include 'footer.html' %}
+</body>
+</html>

@@ -1,0 +1,273 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Service Center Dashboard</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+:root{
+    --primary:#4f46e5;
+    --bg:#f4f6f9;
+    --dark:#1f2937;
+    --light:#ffffff;
+    --text:#374151;
+}
+
+/* RESET */
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
+
+body{
+    background:var(--bg);
+}
+
+/* ===== SIDEBAR ===== */
+.sidebar{
+    width:260px;
+    height:100vh;
+    background:var(--dark);
+    position:fixed;
+    left:0;
+    top:0;
+    padding:20px;
+    transition:0.3s;
+}
+
+.sidebar .logo{
+    color:#fff;
+    font-size:22px;
+    font-weight:600;
+    margin-bottom:30px;
+    text-align:center;
+}
+
+.sidebar ul{
+    list-style:none;
+}
+
+.sidebar ul li{
+    margin-bottom:10px;
+}
+
+.sidebar ul li a{
+    text-decoration:none;
+    color:#cbd5e1;
+    padding:12px 15px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    border-radius:8px;
+    transition:0.3s;
+}
+
+.sidebar ul li a:hover,
+.sidebar ul li a.active{
+    background:var(--primary);
+    color:#fff;
+}
+
+/* ===== MAIN CONTENT ===== */
+.main{
+    margin-left:260px;
+    padding:25px;
+    transition:0.3s;
+}
+
+/* ===== TOP BAR ===== */
+.topbar{
+    background:var(--light);
+    padding:15px 20px;
+    border-radius:10px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    box-shadow:0 5px 15px rgba(0,0,0,0.05);
+}
+
+.menu-btn{
+    font-size:22px;
+    cursor:pointer;
+    display:none;
+}
+
+.profile{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.profile img{
+    width:38px;
+    height:38px;
+    border-radius:50%;
+}
+
+/* ===== DASHBOARD CARDS ===== */
+.cards{
+    margin-top:25px;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:20px;
+}
+
+.card{
+    background:var(--light);
+    padding:20px;
+    border-radius:12px;
+    box-shadow:0 8px 20px rgba(0,0,0,0.05);
+}
+
+.card h3{
+    font-size:16px;
+    color:var(--text);
+    margin-bottom:10px;
+}
+
+.card span{
+    font-size:28px;
+    font-weight:600;
+    color:var(--primary);
+}
+
+/* ===== TABLE SECTION ===== */
+.table-box{
+    margin-top:30px;
+    background:var(--light);
+    padding:20px;
+    border-radius:12px;
+    box-shadow:0 8px 20px rgba(0,0,0,0.05);
+}
+
+.table-box h2{
+    margin-bottom:15px;
+    font-size:18px;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+table th,table td{
+    padding:12px;
+    border-bottom:1px solid #e5e7eb;
+    text-align:left;
+}
+
+table th{
+    background:#f9fafb;
+}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:900px){
+    .sidebar{
+        left:-260px;
+    }
+    .sidebar.active{
+        left:0;
+    }
+    .main{
+        margin-left:0;
+    }
+    .menu-btn{
+        display:block;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+<div class="sidebar" id="sidebar">
+    <div class="logo">Service Center</div>
+    <ul>
+        <li><a href="{% url 'servicecenter:servicecenter_orders' %}" class="active"><i class="fa-solid fa-cart-shopping"></i> Orders</a></li>
+
+         <li><a href="{% url 'servicecenter:service_cancel_orders' %}"><i class="fa-solid fa-xmark-circle"></i> Cancel Orders</a></li>
+        <li><a href="#"><i class="fa-solid fa-headset"></i> Complaints</a></li>
+        <li><a href="#"><i class="fa-solid fa-users"></i> Client Details</a></li>
+        <li><a href="{% url 'servicecenter:servicecenter_profile' %}"><i class="fa-solid fa-user"></i> Profile</a></li>
+        <li><a href="{% url 'servicecenter:servicecenter_feedback' %}"><i class="fa-solid fa-user"></i> feedback</a></li>
+           <li><a href="{% url 'servicecenter:servicecenter_contacts' %}"><i class="fa-solid fa-user"></i>User Contact</a></li>
+        <li><a href="{% url 'servicecenter:servicecenter_logout' %}"><i class="fa-solid fa-user"></i> logout</a></li>
+    </ul>
+    </ul>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+    <!-- TOP BAR -->
+    <div class="topbar">
+        <i class="fa-solid fa-bars menu-btn" onclick="toggleMenu()"></i>
+        <h3>Dashboard</h3>
+        <div class="profile">
+            <span>Service Admin</span>
+            <img src="https://i.pravatar.cc/150" alt="">
+        </div>
+    </div>
+   
+
+    <!-- CARDS -->
+    <div class="cards">
+        <div class="card">
+            <h3>Total Orders</h3>
+            <span>124</span>
+        </div>
+        <div class="card">
+            <h3>Cancelled Orders</h3>
+            <span>18</span>
+        </div>
+        <div class="card">
+            <h3>Active Complaints</h3>
+            <span>7</span>
+        </div>
+        <div class="card">
+            <h3>Clients</h3>
+            <span>56</span>
+        </div>
+    </div>
+
+    <!-- TABLE -->
+    <div class="table-box">
+        <h2>Recent Orders</h2>
+        <table>
+            <tr>
+                <th>Order ID</th>
+                <th>Client</th>
+                <th>Service</th>
+                <th>Status</th>
+            </tr>
+            <tr>
+                <td>#1023</td>
+                <td>Rahul</td>
+                <td>AC Repair</td>
+                <td>Completed</td>
+            </tr>
+            <tr>
+                <td>#1024</td>
+                <td>Anita</td>
+                <td>Washing Machine</td>
+                <td>Pending</td>
+            </tr>
+        </table>
+    </div>
+
+</div>
+<script>
+function toggleMenu(){
+    document.getElementById("sidebar").classList.toggle("active");
+}
+</script>
+
+</body>
+</html>

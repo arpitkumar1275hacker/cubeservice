@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Service Center | Profile</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{
+    background:#f4f6f8;
+    font-family:'Segoe UI',sans-serif;
+    margin:0;
+}
+
+/* ===== CONTENT ===== */
+.content{
+    
+}
+
+/* ===== CARD ===== */
+.profile-card{
+    max-width:900px;
+    margin:auto;
+    background:#fff;
+    border-radius:14px;
+    box-shadow:0 6px 20px rgba(0,0,0,0.08);
+    overflow:hidden;
+}
+
+/* ===== HEADER ===== */
+.profile-header{
+    background:linear-gradient(135deg,#4f46e5,#6366f1);
+    padding:30px;
+    color:#fff;
+}
+
+.profile-header h2{
+    margin:0;
+    font-size:26px;
+}
+
+.profile-header p{
+    margin-top:6px;
+    opacity:.9;
+}
+
+/* ===== BODY ===== */
+.profile-body{
+    padding:30px;
+}
+
+/* ===== GRID ===== */
+.profile-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:20px;
+}
+
+.profile-item{
+    background:#f9fafb;
+    padding:14px 16px;
+    border-radius:10px;
+}
+
+.profile-item label{
+    display:block;
+    font-size:13px;
+    color:#6b7280;
+    margin-bottom:4px;
+}
+
+.profile-item span{
+    font-size:15px;
+    font-weight:600;
+    color:#111827;
+}
+
+/* ===== ACTION ===== */
+.profile-actions{
+    margin-top:30px;
+    text-align:right;
+}
+
+.edit-btn{
+    background:#4f46e5;
+    color:#fff;
+    padding:12px 20px;
+    border-radius:10px;
+    text-decoration:none;
+    font-weight:600;
+    display:inline-block;
+}
+
+.edit-btn:hover{
+    opacity:.9;
+}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:1024px){
+    .content{
+        margin-left:0;
+        padding-top:90px;
+    }
+}
+
+@media(max-width:640px){
+    .profile-grid{
+        grid-template-columns:1fr;
+    }
+
+    .profile-header h2{
+        font-size:22px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+{% include 'serviceheader.html' %}
+{% block content %}
+
+<div class="content">
+
+  <div class="profile-card">
+
+    <!-- HEADER -->
+    <div class="profile-header">
+      <h2>{{ servicecenter.servicecenter_name }}</h2>
+      <p>Service Center Profile</p>
+    </div>
+
+    <!-- BODY -->
+    <div class="profile-body">
+
+      <div class="profile-grid">
+ <div class="profile-item">
+          
+          <label>User Name</label>
+          <span>{{ servicecenter.username }}</span>
+        </div>
+        <div class="profile-item">
+          
+          <label>Owner Name</label>
+          <span>{{ servicecenter.author_name }}</span>
+        </div>
+
+        <div class="profile-item">
+          <label>Email</label>
+          <span>{{ servicecenter.email }}</span>
+        </div>
+
+        <div class="profile-item">
+          <label>Mobile</label>
+          <span>{{ servicecenter.mobile }}</span>
+        </div>
+        <div class="profile-item">
+          <label>Aadhaar</label>
+          <span>{{ servicecenter.aadhaar }}</span>
+        </div>
+
+        <div class="profile-item">
+          <label>District</label>
+          <span>{{ servicecenter.district }}</span>
+        </div>
+
+        <div class="profile-item">
+          <label>State</label>
+          <span>{{ servicecenter.state }}</span>
+        </div>
+
+        <div class="profile-item">
+          <label>Pincode</label>
+          <span>{{ servicecenter.pincode }}</span>
+        </div>
+
+      </div>
+
+      <!-- ACTION -->
+      <div class="profile-actions">
+        <a href="#" class="edit-btn">
+          Edit Profile
+        </a>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}
+</body>
+</html>

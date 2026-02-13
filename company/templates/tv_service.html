@@ -1,0 +1,308 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CUBEService Admin Panel</title>
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<style>
+/* ===== CONTENT WRAPPER ===== */
+.content {
+    padding: 20px;
+     /* sidebar width */
+}
+
+/* ===== FORM CARD ===== */
+.form-card {
+    background: #fff;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    max-width: 800px;
+    margin-bottom: 30px;
+}
+
+.form-card h2 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* ===== FORM GROUP ===== */
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+/* ===== BUTTON ===== */
+.submit-btn {
+    background: #4e73df;
+    color: #fff;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+.submit-btn:hover {
+    background: #2e59d9;
+}
+
+/* ===== IMAGE PREVIEW ===== */
+.form-group img {
+    margin-top: 10px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+}
+
+/* ===== TABLE ===== */
+.table-wrapper {
+    background: #fff;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    overflow-x: auto;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 900px;
+}
+
+.data-table th,
+.data-table td {
+    padding: 12px;
+    text-align: center;
+    border-bottom: 1px solid #eee;
+}
+
+.data-table th {
+    background: #f8f9fc;
+    font-weight: 600;
+}
+
+.data-table img {
+    width: 60px;
+    height: auto;
+    border-radius: 6px;
+}
+
+/* ===== MOBILE RESPONSIVE ===== */
+@media (max-width: 992px) {
+    .content {
+        margin-left: 0;
+        padding-top: 80px; /* mobile header */
+    }
+
+    .form-card {
+        max-width: 100%;
+        padding: 20px;
+    }
+
+    .submit-btn {
+        width: 100%;
+    }
+}
+
+@media (max-width: 576px) {
+    .form-card {
+        padding: 15px;
+    }
+
+    .data-table {
+        font-size: 13px;
+    }
+}
+
+
+</style>
+</head>
+
+<body>
+
+{% include 'headerr.html' %}
+
+<div class="content">
+
+  <div class="form-card">
+    {% if is_update %}
+      <!-- ---------------- UPDATE FORM ---------------- -->
+      <h2>Update Booking</h2>
+      <form method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+        
+        <div class="form-group">
+          <label>Product Name</label>
+          <input type="text" name="productName" value="{{ booking.product_name }}" required>
+        </div>
+
+        <div class="form-group">
+          <label>Service Details</label>
+          <input type="text" name="serviceDetails" value="{{ booking.service_details }}" required>
+        </div>
+
+        <div class="form-group">
+          <label>Rating</label>
+          <select name="rating" required>
+            <option value="5" {% if booking.rating == 5 %}selected{% endif %}>5 ★</option>
+            <option value="4" {% if booking.rating == 4 %}selected{% endif %}>4 ★</option>
+            <option value="3" {% if booking.rating == 3 %}selected{% endif %}>3 ★</option>
+            <option value="2" {% if booking.rating == 2 %}selected{% endif %}>2 ★</option>
+            <option value="1" {% if booking.rating == 1 %}selected{% endif %}>1 ★</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Price</label>
+          <input type="number" name="price" value="{{ booking.price }}" required>
+        </div>
+           <div class="form-group">
+          <label>Link</label>
+          <input type="text" name="link" value="{{ booking.link }}" required>
+        </div>
+          <div class="form-group">
+          <label>Details</label>
+          <input type="text" name="details" value="{{ booking.details }}" required>
+        </div>
+        <div class="form-group">
+          <label>Extra Details</label>
+          <input type="text" name="extra_details" value="{{ booking.extra_details }}" required>
+        </div>
+
+        <div class="form-group">
+          <label>Change Image (Optional)</label>
+          <input type="file" name="productImage">
+          <br><br>
+          <img src="{{ booking.product_image.url }}" width="100">
+        </div>
+
+        <button type="submit" class="submit-btn">Update</button>
+      </form>
+
+    {% else %}
+      <!-- ---------------- ADD FORM ---------------- -->
+      <h2>Add Tv Services</h2>
+      <form method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+        
+        <div class="form-group">
+          <label>Product Name</label>
+          <input type="text" name="productName" required>
+        </div>
+
+        <div class="form-group">
+          <label>Upload Image</label>
+          <input type="file" name="productImage" required>
+        </div>
+
+        <div class="form-group">
+          <label>Service Details</label>
+          <input type="text" name="serviceDetails" required>
+        </div>
+
+        <div class="form-group">
+          <label>Rating</label>
+          <select name="rating" required>
+            <option value="5">5 ★</option>
+            <option value="4">4 ★</option>
+            <option value="3">3 ★</option>
+            <option value="2">2 ★</option>
+            <option value="1">1 ★</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Price</label>
+          <input type="number" name="price" required>
+        </div>
+
+        <div class="form-group">
+          <label>Link</label>
+          <input type="text" name="link" required>
+        </div>
+         <div class="form-group">
+          <label>Details</label>
+          <input type="text" name="details" required>
+        </div>
+ <div class="form-group">
+          <label>Extra Details</label>
+          <input type="text" name="extra_details" required>
+        </div>
+
+        <button type="submit" class="submit-btn">Submit</button>
+      </form>
+    {% endif %}
+  </div>
+
+  <!-- ---------------- TABLE SECTION ---------------- -->
+
+  {% if services %}
+  <div class="table-wrapper">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Image</th>
+          <th>Name</th>
+          <th>Details</th>
+          <th>Rating</th>
+          <th>Price</th>
+          <th>Details</th>
+          <th>Extra Details</th>
+          <th>Link</th>
+          
+          <th>Added On</th>
+          <th>Update</th>
+          <th>Delete</th>
+        </tr>
+      </thead>
+
+      <tbody>
+      {% for item in services %}
+      <tr>
+        <td><img src="{{ item.product_image.url }}"></td>
+        <td>{{ item.product_name }}</td>
+        <td>{{ item.service_details }}</td>
+        <td>{{ item.rating }}</td>
+        <td>{{ item.price }}</td>
+        <td>{{ item.details }}</td>
+        <td>{{ item.extra_details }}</td>
+        <td>{{ item.link }}</td>
+        <td>{{ item.created_at|date:"d M Y" }}</td>
+
+        <td>
+          <a href="{% url 'company:update_tv_service' item.id %}" style="padding:6px 10px; background:#28a745; color:white; border-radius:4px; text-decoration:none;">Update</a>
+        </td>
+
+        <td>
+           <form method="POST" action="{% url 'company:delete_tv_service' item.id %}">
+            {% csrf_token %}
+            <button style="padding:6px 10px; background:#dc3545; color:white; border:none; border-radius:4px;">Delete</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+      </tbody>
+
+    </table>
+  </div>
+  {% endif %}
+
+</div>
+
+</body>
+</html>

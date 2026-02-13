@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Service Center Registration</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Google Font -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+/* ===== ROOT ===== */
+:root {
+  --primary: #4f46e5;
+  --secondary: #2563eb;
+  --bg-gradient: linear-gradient(135deg, #e0e7ff, #c7d2fe);
+  --card-bg: #ffffff;
+  --text-dark: #1f2937;
+  --text-muted: #6b7280;
+  --border: #e5e7eb;
+  --radius: 14px;
+}
+
+/* ===== RESET ===== */
+* {
+  box-sizing: border-box;
+}
+
+/* ===== BODY ===== */
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background: var(--bg-gradient);
+  color: var(--text-dark);
+}
+
+/* ===== WRAPPER ===== */
+.form-wrapper {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+}
+
+/* ===== CARD ===== */
+.form-card {
+  width: 100%;
+  max-width: 1000px;
+  background: var(--card-bg);
+  border-radius: 26px;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+}
+
+/* ===== HEADER ===== */
+.form-header {
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  color: #fff;
+  text-align: center;
+  padding: 36px 24px;
+}
+
+.form-header h2 {
+  margin: 0;
+  font-size: 30px;
+  font-weight: 700;
+}
+
+.form-header p {
+  margin-top: 8px;
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+/* ===== FORM ===== */
+.form-body {
+  padding: 36px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 22px;
+}
+
+/* ===== FORM GROUP ===== */
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+
+/* ===== INPUT ===== */
+.form-group input {
+  padding: 14px 16px;
+  font-size: 15px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  outline: none;
+  transition: 0.2s ease;
+}
+
+.form-group input::placeholder {
+  color: #9ca3af;
+}
+
+.form-group input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+}
+
+/* ===== FULL WIDTH ===== */
+.full-width {
+  grid-column: span 2;
+}
+
+/* ===== BUTTON ===== */
+.form-submit {
+  grid-column: span 2;
+  margin-top: 10px;
+}
+
+.form-submit button {
+  width: 100%;
+  padding: 16px;
+  font-size: 17px;
+  font-weight: 600;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+  color: #fff;
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  box-shadow: 0 15px 35px rgba(37, 99, 235, 0.35);
+  transition: 0.25s ease;
+}
+
+.form-submit button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 20px 45px rgba(37, 99, 235, 0.45);
+}
+
+/* ===== FOOTER ===== */
+.form-footer {
+  background: #f9fafb;
+  text-align: center;
+  font-size: 12px;
+  color: var(--text-muted);
+  padding: 14px;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .form-body {
+    grid-template-columns: 1fr;
+    padding: 24px;
+  }
+
+  .full-width,
+  .form-submit {
+    grid-column: span 1;
+  }
+
+  .form-header h2 {
+    font-size: 22px;
+  }
+}
+</style>
+</head>
+
+<body>
+{% include 'headerr.html' %}
+{% block content %}
+<div class="form-wrapper">
+
+  <div class="form-card">
+
+    <!-- HEADER -->
+    <div class="form-header">
+      <h2>Service Center Registration</h2>
+      <p>Secure onboarding for verified service providers</p>
+    </div>
+
+    <!-- FORM -->
+    <form method="POST" class="form-body">
+  {% csrf_token %}
+
+  <div class="form-group">
+    <label>Username</label>
+    <input type="text" name="username" placeholder="Enter username" required>
+  </div>
+
+  <div class="form-group">
+    <label>Service Center Name</label>
+    <input type="text" name="servicecenter_name" placeholder="Service center name" required>
+  </div>
+
+  <div class="form-group">
+    <label>Owner / Author Name</label>
+    <input type="text" name="author_name" placeholder="Full name" required>
+  </div>
+
+  <div class="form-group">
+    <label>District</label>
+    <input type="text" name="district" placeholder="District" required>
+  </div>
+
+  <div class="form-group">
+    <label>State</label>
+    <input type="text" name="state" placeholder="State" required>
+  </div>
+
+  <div class="form-group">
+    <label>Pincode</label>
+    <input type="text" name="pincode" maxlength="6" placeholder="6-digit pincode" required>
+  </div>
+
+  <div class="form-group">
+    <label>Aadhaar Number</label>
+    <input type="text" name="aadhaar" maxlength="12" placeholder="12-digit Aadhaar" required>
+  </div>
+
+  <div class="form-group">
+    <label>Mobile Number</label>
+    <input type="text" name="mobile" maxlength="10" placeholder="10-digit mobile" required>
+  </div>
+
+  <div class="form-group full-width">
+    <label>Email Address</label>
+    <input type="email" name="email" placeholder="example@gmail.com" required>
+  </div>
+
+  <div class="form-group">
+    <label>Password</label>
+    <input type="password" name="password" required>
+  </div>
+
+  <div class="form-group">
+    <label>Confirm Password</label>
+    <input type="password" name="confirm_password" required>
+  </div>
+
+  <div class="form-submit">
+    <button type="submit">Register Service Center</button>
+  </div>
+
+</form>
+
+    <!-- FOOTER -->
+    <div class="form-footer">
+      © 2026 Cube Services • Secure Registration
+    </div>
+
+  </div>
+
+</div>
+{% endblock %}
+</body>
+</html>

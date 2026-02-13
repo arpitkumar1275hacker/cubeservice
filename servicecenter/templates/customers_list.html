@@ -1,0 +1,201 @@
+<style>
+
+:root {
+    --primary: #4f46e5;
+    --bg-body: #f3f4f6;
+    --text-dark: #111827;
+}
+.content{
+    margin-left: 244px;
+    
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    
+    background: var(--bg-body);
+    font-family: 'Inter', sans-serif;
+}
+
+/* Space for fixed header */
+.dashboard-container {
+    padding: 30px;
+   
+}
+
+/* Heading */
+h2 {
+    margin-bottom: 20px;
+    color: var(--text-dark);
+}
+
+/* Filter Section */
+.filter-bar {
+    background: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 15px;
+}
+
+.filter-bar input {
+    padding: 10px 15px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    width: 250px;
+    max-width: 100%;
+}
+
+.btn-filter {
+    background: var(--primary);
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+/* Table Card */
+.table-card {
+    background: #fff;
+    border-radius: 12px;
+    overflow-x: auto; /* key for mobile */
+    box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+}
+
+/* Table */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 700px; /* forces scroll on mobile */
+}
+
+th {
+    background: #f9fafb;
+    padding: 15px 20px;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    color: #6b7280;
+    border-bottom: 1px solid #e5e7eb;
+    text-align: left;
+}
+
+td {
+    padding: 15px 20px;
+    border-bottom: 1px solid #f3f4f6;
+    color: var(--text-dark);
+    font-size: 0.95rem;
+}
+
+/* Badges */
+.pincode-badge {
+    background: #eef2ff;
+    color: var(--primary);
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.8rem;
+    white-space: nowrap;
+}
+
+/* Empty State */
+.empty-row {
+    text-align: center;
+    padding: 40px;
+    color: #9ca3af;
+}
+
+/* =======================
+   Mobile Responsive
+======================= */
+@media (max-width: 768px) {
+
+    .dashboard-container {
+        padding: 15px;
+        padding-top: 140px;
+    }
+
+    h2 {
+        font-size: 1.2rem;
+    }
+
+    .filter-bar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .btn-filter {
+        width: 100%;
+    }
+
+    table {
+        min-width: 600px;
+    }
+
+    th, td {
+        padding: 12px;
+        font-size: 0.85rem;
+    }
+}
+
+
+</style>
+
+<body>
+{% include 'serviceheader.html' %}
+<div class="content">
+<div class="dashboard-container">
+
+    <h2>Customer List</h2>
+
+    <!-- Filter -->
+    <form method="GET" class="filter-bar">
+        <input type="text" name="pincode"
+               placeholder="Enter Pincode (e.g. 226001)"
+               value="{{ request.GET.pincode }}">
+        <button type="submit" class="btn-filter">Filter</button>
+        <a href="?" style="color:#6b7280; text-decoration:none;">Clear</a>
+    </form>
+
+    <!-- Table -->
+    <div class="table-card" >
+        <table>
+            <thead>
+                <tr>
+                    <th>Customer Name</th>
+                    <th>Mobile Number</th>
+                    <th>Pincode</th>
+                    <th>State</th>
+                    <th>District</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for c in customers %}
+                <tr>
+                    <td><strong>{{ c.fullname }}</strong></td>
+                    <td>{{ c.mobile }}</td>
+                    <td><span class="pincode-badge">{{ c.pincode }}</span></td>
+                    <td><span class="pincode-badge">{{ c.state }}</span></td>
+                    <td><span class="pincode-badge">{{ c.district }}</span></td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="5" class="empty-row">
+                        No customers found for this pincode.
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</div>
+</div>
+</body>

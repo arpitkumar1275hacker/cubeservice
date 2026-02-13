@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Order Accepted</title>
+    <style>
+        body {
+            background-color: #f4f6f8;
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        .email-box {
+            max-width: 600px;
+            background: #ffffff;
+            margin: auto;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        .header {
+            background: #2f80ed;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+        .content {
+            padding: 30px;
+            color: #333;
+        }
+        .content h2 {
+            color: #2f80ed;
+        }
+        .order-details {
+            background: #f9fafb;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .order-details p {
+            margin: 6px 0;
+        }
+        .footer {
+            background: #f1f1f1;
+            text-align: center;
+            padding: 15px;
+            font-size: 13px;
+            color: #666;
+        }
+        .btn {
+            display: inline-block;
+            background: #2f80ed;
+            color: #fff;
+            padding: 12px 22px;
+            text-decoration: none;
+            border-radius: 6px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="email-box">
+    <div class="header">
+        <h1>{{ company_name }}</h1>
+        <p>Order Accepted Successfully</p>
+    </div>
+
+    <div class="content">
+        <h2>Hello {{ username }},</h2>
+
+        <p>Good news! 🎉 Your service order has been <strong>accepted</strong> by our service center.</p>
+
+        <div class="order-details">
+            <p><strong>Order ID:</strong> #{{ order_id }}</p>
+            <p><strong>Service Type:</strong> {{ service_type }}</p>
+            <p><strong>Service Date:</strong> {{ service_date }}</p>
+        </div>
+
+        <p>Our team will contact you shortly for further updates.</p>
+
+        <a href="#" class="btn">View Order</a>
+    </div>
+
+    <div class="footer">
+        © {{ company_name }} | All rights reserved
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,70 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Customer Reviews</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'css/review.css' %}">
+      
+</head>
+
+<body>
+{% include 'headerr.html' %}
+  
+  {% block content %}
+<div class="container">
+    <h2>⭐ Customer Reviews</h2>
+
+    {% if reviews %}
+        {% for fb in reviews %}
+        <div class="review-card">
+
+            <div class="review-header">
+                <div>
+                    <div class="user">
+                        <i class="fa fa-user"></i>
+                        {{ fb.user.userprofile.fullname }}
+                        <!-- OR Full name -->
+                        <!-- {{ fb.user.userprofile.fullname }} -->
+                    </div>
+                    <div class="service">
+                        {{ fb.service_name }}
+                    </div>
+                </div>
+
+                <div class="stars">
+                    {% for i in "12345" %}
+                        {% if forloop.counter <= fb.rating %}
+                            <i class="fas fa-star"></i>
+                        {% else %}
+                            <i class="far fa-star"></i>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            
+
+            <p class="review-text">{{ fb.message }}</p>
+
+            <div class="date">
+                {{ fb.created_at|date:"d M Y, h:i A" }}
+            </div>
+    <form method="POST"
+          action="{% url 'company:delete_feedback' fb.id %}"
+          onsubmit="return confirm('Delete this feedback?');"
+          style="margin-top:8px;">
+        {% csrf_token %}
+        <button class="delete-btn">
+            <i class="fa fa-trash"></i> Delete
+        </button>
+    </form>
+
+</div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <p>No reviews found.</p>
+    {% endif %}
+</div>
+{% endblock %}
+</body>
+</html>

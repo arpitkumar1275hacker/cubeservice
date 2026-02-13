@@ -1,0 +1,61 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>All Services | CUBE Service</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="{% static 'css/service.css' %}">
+<style>
+    .search-box{
+         margin-left:140px ;
+    }
+</style>
+
+</head>
+
+<body>
+
+<!-- ===== HEADER ===== -->
+{% include 'header.html' %}
+
+    <form method="GET" action="" class="search-box">
+        <input type="text" name="q" placeholder="Search services..." value="{{ query }}">
+        <button type="submit"><i class="fas fa-search"></i></button>
+    </form>
+</div>
+
+<!-- ===== CONTENT ===== -->
+<div class="container">
+
+{% if products %}
+<div class="grid">
+{% for item in products %}
+<a href="/{{ item.link }}" class="product-link">
+    <div class="card">
+
+        <div class="img-box">
+           <img src="{{ item.productImage.url }}" alt="{{ item.productName }}">
+        </div>
+
+        <div class="card-body">
+            <div class="card-title">{{ item.productName }}</div>
+            <div class="card-desc">{{ item.serviceDetails }}</div>
+            <div class="rating">⭐ {{ item.rating }}/5</div>
+            <div class="price">₹ {{ item.price }}</div>
+        
+        </div>
+
+    </div>
+</a>
+{% endfor %}
+</div>
+{% else %}
+<div class="empty">No services found 😔</div>
+{% endif %}
+
+</div>
+
+</body>
+</html>

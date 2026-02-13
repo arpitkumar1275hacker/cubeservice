@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Order Confirmation</title>
+<style>
+body{
+    margin:0;
+    padding:0;
+    background:#f4f6f9;
+    font-family:Arial, Helvetica, sans-serif;
+}
+.email-container{
+    max-width:600px;
+    margin:30px auto;
+    background:#ffffff;
+    border-radius:10px;
+    overflow:hidden;
+    box-shadow:0 6px 20px rgba(0,0,0,0.1);
+}
+.header{
+    background:#ff9800;
+    color:#ffffff;
+    padding:20px;
+    text-align:center;
+}
+.header h1{
+    margin:0;
+    font-size:24px;
+}
+.content{
+    padding:25px;
+    color:#333;
+}
+.content h3{
+    margin-top:0;
+}
+.order-box{
+    background:#f9fafb;
+    padding:15px;
+    border-radius:8px;
+    margin:15px 0;
+}
+.order-box p{
+    margin:6px 0;
+}
+.total{
+    font-size:18px;
+    font-weight:bold;
+    color:#ff9800;
+}
+.footer{
+    background:#f1f1f1;
+    text-align:center;
+    padding:15px;
+    font-size:13px;
+    color:#666;
+}
+</style>
+</head>
+
+<body>
+<div class="email-container">
+
+    <div class="header">
+        <h1>🛠 CUBEService</h1>
+        <p>Order Confirmation</p>
+    </div>
+
+    <div class="content">
+        <h3>Hello {{ name }},</h3>
+        <p>Thank you for choosing <strong>CUBEService</strong> ❤️</p>
+        <p>Your order has been placed successfully.</p>
+
+        <div class="order-box">
+            <p><strong>📦 Order ID:</strong> #{{ order_id }}</p>
+            <p><strong>📅 Service Date:</strong> {{ service_date }}</p>
+            <p><strong>📍 Address:</strong> {{ address }}, {{ district }} - {{ pincode }}</p>
+        </div>
+
+        <h4>🛠 Ordered Services</h4>
+        <pre style="font-family:inherit;">{{ order_summary }}</pre>
+
+        <p class="total">💰 Total Amount: ₹{{ total_price }}</p>
+
+        <p>If you have any questions, feel free to contact us.</p>
+        <p>We look forward to serving you! 😊</p>
+    </div>
+
+    <div class="footer">
+        © {{ year }} CUBEService • All rights reserved
+    </div>
+
+</div>
+</body>
+</html>

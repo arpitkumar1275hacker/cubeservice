@@ -1,0 +1,142 @@
+{% include 'headerr.html' %}
+{% block content %}
+
+<style>
+    body{
+    background:#f4f6f8;
+    font-family:'Segoe UI',sans-serif;
+}
+
+/* ===== DASHBOARD CONTENT ===== */
+.content{
+    
+}
+
+/* ===== TITLE ===== */
+h2{
+    margin-bottom:20px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+/* ===== SEARCH INPUT ===== */
+#searchInput{
+    width:100%;
+    max-width:400px;
+    padding:12px 14px;
+    margin-bottom:20px;
+    border-radius:8px;
+    border:1px solid #ddd;
+    font-size:15px;
+}
+
+/* ===== TABLE WRAPPER ===== */
+.table-wrapper{
+    background:#fff;
+    padding:15px;
+    border-radius:10px;
+    box-shadow:0 6px 20px rgba(0,0,0,0.08);
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+}
+
+/* ===== TABLE ===== */
+table{
+    width:100%;
+    min-width:1200px;   /* forces horizontal scroll */
+    border-collapse:collapse;
+}
+
+th, td{
+    padding:12px;
+    border-bottom:1px solid #eee;
+    font-size:14px;
+    text-align:left;
+    white-space:nowrap;
+}
+
+th{
+    background:#f1f3f6;
+    font-weight:600;
+}
+
+tr:nth-child(even){
+    background:#fafafa;
+}
+
+/* ===== MOBILE ===== */
+@media(max-width:992px){
+    .content{
+        margin-left:0;
+        padding-top:80px;
+    }
+
+    #searchInput{
+        max-width:100%;
+    }
+}
+</style>
+
+<h1 class="page-title">Client Management</h1>
+<input
+    type="text"
+    id="searchInput"
+    placeholder="Search name, email, phone, address, pincode..."
+    onkeyup="searchTable()">
+
+<div class="content">
+<div class="layout">
+    <div class="card">
+
+        <div class="table-wrapper">
+            <table class="client-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>District</th>
+                        <th>State</th>
+                        <th>Address</th>
+                        <th>Pincode</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                {% for client in profile %}
+                    <tr>
+                        <td>{{ client.fullname }}</td>
+                        <td>{{ client.email }}</td>
+                        <td>{{ client.mobile }}</td>
+                        <td>{{ client.district }}</td>
+                        <td>{{ client.state }}</td>
+                        <td>{{ client.address }}</td>
+                        <td>{{ client.pincode }}</td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="7" class="empty">No clients found</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+
+            </table>
+        </div>
+
+    </div>
+</div>
+</div>
+<script>
+function searchTable() {
+    let input = document.getElementById("searchInput").value.toLowerCase();
+    let rows = document.querySelectorAll(".client-table tbody tr");
+
+    rows.forEach(row => {
+        let rowText = row.innerText.toLowerCase();
+        row.style.display = rowText.includes(input) ? "" : "none";
+    });
+}
+</script>
+
+{% endblock %}

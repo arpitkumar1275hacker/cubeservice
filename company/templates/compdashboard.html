@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard</title>
+
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+/* RESET */
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+/* BODY */
+body{
+    background:#f4f6f9;
+}
+
+/* MOBILE HEADER */
+.mobile-header{
+    display:none;
+    height:60px;
+    background:#11101d;
+    color:#fff;
+    align-items:center;
+    padding:0 20px;
+    gap:15px;
+    font-size:18px;
+    position:fixed;
+    top:0;
+    width:100%;
+    z-index:1001;
+}
+.mobile-header i{
+    font-size:22px;
+    cursor:pointer;
+}
+
+/* SIDEBAR */
+.sidebar{
+    width:260px;
+    height:100vh;
+    background:#11101d;
+    color:#fff;
+    position:fixed;
+    top:0;
+    left:0;
+    transition:0.3s;
+    z-index:1000;
+}
+.sidebar .brand{
+    height:60px;
+    background:#1d1b31;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:0 20px;
+    font-size:20px;
+}
+
+/* MENU */
+.menu{
+    list-style:none;
+    padding:15px 0;
+}
+.menu li{
+    padding:12px 20px;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+.menu li:hover{
+    background:#1d1b31;
+}
+
+/* DROPDOWN */
+.dropdown-btn{
+    display:flex;
+    justify-content:space-between;
+    width:100%;
+}
+.arrow{
+    transition:0.3s;
+}
+.dropdown.active .arrow{
+    transform:rotate(180deg);
+}
+.submenu{
+    display:none;
+    padding-left:45px;
+}
+.submenu li{
+    font-size:14px;
+    padding:10px 0;
+}
+
+.submenu li a{
+    text-decoration:none;
+    color:white;
+}
+
+.li a{
+    text-decoration:none;
+    color:white;
+}
+
+/* MAIN CONTENT */
+.main-content{
+    margin-left:260px;
+    padding:80px 20px 20px;
+}
+
+/* DASHBOARD CARDS */
+.dashboard-cards{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
+    gap:20px;
+   }
+.card{
+    background:#fff;
+    padding:20px;
+    border-radius:10px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    box-shadow:0 4px 10px rgba(0,0,0,0.08);
+}
+.card h3{
+    font-size:14px;
+    color:#666;
+}
+.card h2{
+    font-size:26px;
+    margin-top:5px;
+}
+.card i{
+    font-size:32px;
+    padding:15px;
+    border-radius:50%;
+    color:#fff;
+}
+.orders i{background:#4e73df;}
+.cancel i{background:#e74a3b;}
+.customers i{background:#1cc88a;}
+.revenue i{background:#f6c23e;}
+
+/* OVERLAY */
+.overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.4);
+    display:none;
+    z-index:999;
+}
+
+/* MOBILE */
+@media(max-width:992px){
+    .mobile-header{display:flex;}
+    .sidebar{left:-260px;}
+    .sidebar.active{left:0;}
+    .overlay.active{display:block;}
+    .main-content{
+        margin-left:0;
+        padding-top:80px;
+    }
+}
+
+/* SCROLLABLE DROPDOWN */
+.submenu {
+    display: none;
+    padding-left: 45px;
+    max-height: 220px;        /* control dropdown height */
+    overflow-y: auto;         /* enable vertical scroll */
+}
+
+/* Optional: nice scrollbar (Chrome/Edge) */
+.submenu::-webkit-scrollbar {
+    width: 6px;
+}
+.submenu::-webkit-scrollbar-thumb {
+    background: #555;
+    border-radius: 10px;
+}
+.submenu::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+</style>
+</head>
+<body>
+
+<!-- MOBILE HEADER -->
+<header class="mobile-header">
+    <i class="fa-solid fa-bars" id="menuToggle"></i>
+    <span>Admin Dashboard</span>
+</header>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+    <div class="brand">
+        <i class="fa-solid fa-cube"></i>
+        <span>Admin Panel</span>
+    </div>
+
+    <ul class="menu">
+   <a href="{% url 'company:compdashboard' %}"style="text-decoration: none; color: white;"><li class="active"><i class="fa-solid fa-gauge"></i> Dashboard</li></a>
+       <a href="{% url 'company:company_orders' %}"style="text-decoration: none; color: white;"><li><i class="fa-solid fa-cart-shopping"></i> Orders</li></a>
+       <a href="{% url 'company:cancelorder' %}"style="text-decoration: none; color: white;"><li><i class="fa-solid fa-cart-shopping"></i>Cancel Orders</li></a>
+<a href="{% url 'company:userprofile' %}" style="text-decoration: none; color: white;"><li><i class="fa-solid fa-users"></i> Customers</li></a>
+        <li><i class="fa-solid fa-wallet"style="text-decoration: none; color: white;"></i></i> Payments</li>
+
+        <li class="dropdown">
+            <div class="dropdown-btn">
+                <span><i class="fa-solid fa-clipboard-list"></i> Services</span>
+                <i class="fa-solid fa-chevron-down arrow"></i>
+            </div>
+            <ul class="submenu">
+                 <a href="{% url 'company:homeservice' %}"style="text-decoration: none; color: white;"><li>Home Service & Product</li></a>
+         <a href="{% url 'company:popularbooking' %}"style="text-decoration: none; color: white;"><li>Most Booked Services</li></a>
+          <a href="{% url 'company:kitchen' %}"style="text-decoration: none; color: white;"><li>Kitchen Product Service</li></a>
+          <a href="{% url 'company:sessionalbooking' %}"style="text-decoration: none; color: white;"><li>Sessional Product Service</li></a>
+            </ul>
+        </li>
+
+        <li class="dropdown">
+            <div class="dropdown-btn">
+                <span><i class="fa-solid fa-screwdriver-wrench"></i> Internal Services</span>
+                <i class="fa-solid fa-chevron-down arrow"></i>
+            </div>
+            <ul class="submenu">
+                <a href="{% url 'company:ac_service' %}"style="text-decoration: none; color: white;"><li>Ac servise</li></a>
+          <a href="{% url 'company:fan_service' %}"style="text-decoration: none; color: white;"><li>Fan Service</li></a>
+          <a href="{% url 'company:press_service' %}"style="text-decoration: none; color: white;"><li>Press</li></a>
+            <a href="{% url 'company:geyser_service' %}"style="text-decoration: none; color: white;"><li>Geyser Services</li></a>
+          <a href="{% url 'company:oven_service' %}"style="text-decoration: none; color: white;"><li>Oven Services</li></a>
+          <a href="{% url 'company:tv_service' %}"style="text-decoration: none; color: white;"><li>Tv Services</li></a>
+         <a href="{% url 'company:laptop_service' %}"style="text-decoration: none; color: white;"><li>Laptop Services</li></a>
+         <a href="{% url 'company:inverter_service' %}"style="text-decoration: none; color: white;"><li>Inverter Services</li></a>
+        <a href="{% url 'company:chimney_service' %}"style="text-decoration: none; color: white;"><li>Chimney Services</li></a>
+        <a href="{% url 'company:washing_service' %}"style="text-decoration: none; color: white;"><li>Washing Machine Services</li></a>
+         <a href="{% url 'company:waterpurifier_service' %}"style="text-decoration: none; color: white;"><li>Waterpurifier service</li></a>
+      <a href="{% url 'company:watercooler_service' %}"style="text-decoration: none; color: white;"><li>Water cooler Service</li></a>
+       <a href="{% url 'company:fridge_service' %}" style="text-decoration: none; color: white;"><li>Fridge Service</li></a>
+       <a href="{% url 'company:see_all_product' %}"style="text-decoration: none; color: white;"><li>See all Service</li></a>           
+</ul>
+        </li>
+<a href="{% url 'company:review' %}"style="text-decoration: none; color: white;"><li><i class="fa-solid fa-right-from-bracket"></i>Review</li></a>
+        <li><i class="fa-solid fa-gear"></i> Settings</li>
+
+
+  <li class="dropdown">
+            <div class="dropdown-btn">
+                <span><i class="fa-solid fa-clipboard-list"style="text-decoration: none; color: white;"></i>Theam</span>
+                <i class="fa-solid fa-chevron-down arrow"style="text-decoration: none; color: white;"></i>
+            </div>
+            <ul class="submenu">
+                 <a href="{% url 'company:add_slider' %}" style="text-decoration: none; color: white;"><li>Slider</li></a>
+        <a href="{% url 'company:add_advertisement' %}" style="text-decoration: none; color: white;"><li>Advertizement 1</li></a>
+          <a href="{% url 'company:add_advertisement_1' %}" style="text-decoration: none; color: white;"><li>Advertizement2</li></a>
+          <a href="#"><li>Advertizement3</li></a>
+            </ul>
+        </li>
+       </li>
+ <a href="{% url 'company:register_servicecenter' %}" style="text-decoration: none; color: white;"><li>Service Center Register</li></a>
+  <a href="{% url 'company:servicecenter_list' %}" style="text-decoration: none; color:white;"><li><i class="fa-solid fa-screwdriver-wrench"></i>Service Center Details</li></a>
+
+
+ <a href="{% url 'company:see_all_product' %}" style="text-decoration: none; color: white;"><li><i class="fa-solid fa-users"></i>see_all_product</li></a>
+ <a href="{% url 'company:manage_policy' %}" style="text-decoration: none; color: white;"><li><i class="fa-solid fa-users"></i>Policy</li></a>
+ <a href="{% url 'company:logout_admin' %}" style="text-decoration:none; color:white;"><li><i class="fa-solid fa-right-from-bracket"></i> Logout</li></a>
+    </ul>
+</aside>
+
+<!-- MAIN CONTENT -->
+<div class="main-content">
+
+    
+    <!-- DASHBOARD STATS -->
+    <div class="dashboard-cards">
+
+        <div class="card orders">
+            <div>
+                <h3>Total Orders</h3>
+                <h2>{{ total_orders}}</h2>
+            </div>
+            <i class="fa-solid fa-cart-shopping"></i>
+        </div>
+
+        <div class="card cancel">
+            <div>
+                <h3>Total Cancel Orders</h3>
+                <h2>{{total_cancel_orders}}</h2>
+            </div>
+            <i class="fa-solid fa-ban"></i>
+        </div>
+
+        <div class="card customers">
+            <div>
+                <h3>Total Customers</h3>
+                <h2>{{total_customer}}</h2>
+            </div>
+            <i class="fa-solid fa-users"></i>
+        </div>
+
+        <div class="card revenue">
+            <div>
+                <h3>Total Revenue</h3>
+                <h2>0</h2>
+            </div>
+            <i class="fa-solid fa-wallet"></i>
+        </div>
+
+    </div>
+
+    <p>Welcome to your admin dashboard.</p>
+
+</div>
+
+<!-- OVERLAY -->
+<div class="overlay" id="overlay"></div>
+
+<script>
+/* SIDEBAR TOGGLE */
+const menuToggle = document.getElementById("menuToggle");
+const sidebar = document.querySelector(".sidebar");
+const overlay = document.getElementById("overlay");
+
+menuToggle.addEventListener("click",()=>{
+    sidebar.classList.toggle("active");
+    overlay.classList.toggle("active");
+});
+
+overlay.addEventListener("click",()=>{
+    sidebar.classList.remove("active");
+    overlay.classList.remove("active");
+});
+
+/* DROPDOWN */
+document.querySelectorAll(".dropdown-btn").forEach(btn=>{
+    btn.addEventListener("click",function(){
+        const parent=this.parentElement;
+        parent.classList.toggle("active");
+        const submenu=parent.querySelector(".submenu");
+        submenu.style.display=submenu.style.display==="block"?"none":"block";
+    });
+});
+</script>
+
+</body>
+</html>
